@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ScieCraft — Crossplay Minecraft Server</title>
-<meta name="description" content="ScieCraft is a crossplay Minecraft server. Java and Bedrock players welcome. Join us in-game or on Discord.">
+<title>Event Countdown — ScieCraft</title>
+<meta name="description" content="Create and share a countdown timer for ScieCraft server events.">
 <script>
   (function () {
     var saved = localStorage.getItem('sciecraft-theme');
@@ -22,42 +22,28 @@
     --bg-panel-raised: #331c2b;
     --grass: #f0568e;
     --grass-dark: #c93d70;
-    --dirt: #7a5a3a;
     --gold: #f4a8c9;
     --ink: #f7e9f0;
     --ink-dim: #c9a4bb;
     --stone: #402336;
     --line: #40233a;
-    --java: #8fb8e8;
-    --bedrock: #f0568e;
-    --title-shadow: 4px 4px 0 rgba(0,0,0,0.35);
-    --brand-bevel: inset -4px -4px 0 rgba(0,0,0,0.25), inset 4px 4px 0 rgba(255,255,255,0.15);
   }
-
   html[data-theme="light"]{
     --bg: #fdf2f8;
     --bg-panel: #ffffff;
     --bg-panel-raised: #fdeaf3;
     --grass: #ec6fa8;
     --grass-dark: #d9548e;
-    --dirt: #c99a7a;
     --gold: #b592d6;
     --ink: #5b3355;
     --ink-dim: #9b7796;
     --stone: #fbe1ee;
     --line: #f6cfe3;
-    --java: #7fa8d9;
-    --bedrock: #ec6fa8;
-    --title-shadow: 3px 3px 0 rgba(236,111,168,0.18);
-    --brand-bevel: inset -4px -4px 0 rgba(0,0,0,0.1), inset 4px 4px 0 rgba(255,255,255,0.35);
   }
-
-  html, body{ transition: background-color 0.2s ease; }
 
   * { box-sizing: border-box; }
 
   html{ overflow-x: hidden; }
-  html { scroll-behavior: smooth; }
 
   body{
     margin:0;
@@ -66,9 +52,9 @@
     font-family: 'Inter', system-ui, sans-serif;
     line-height: 1.5;
     -webkit-font-smoothing: antialiased;
+    transition: background-color 0.2s ease;
   }
 
-  /* subtle pixel-noise texture on the background */
   body::before{
     content:"";
     position: fixed;
@@ -83,19 +69,15 @@
   }
 
   .wrap{
-    max-width: 920px;
+    max-width: 720px;
     margin: 0 auto;
-    padding: 0 24px;
+    padding: 0 24px 60px;
     position: relative;
     z-index: 1;
   }
 
-  .pixel{
-    font-family: 'Press Start 2P', monospace;
-    line-height: 1.6;
-  }
+  .pixel{ font-family: 'Press Start 2P', monospace; line-height: 1.6; }
 
-  /* ---------- NAV ---------- */
   nav{
     display:flex;
     align-items:center;
@@ -109,7 +91,6 @@
     align-items:center;
     gap:10px;
     font-weight:800;
-    letter-spacing: 0.5px;
     font-size: 1.05rem;
     color: var(--ink);
     text-decoration:none;
@@ -117,7 +98,6 @@
   .brand-block{
     width: 20px; height:20px;
     background: var(--grass);
-    box-shadow: var(--brand-bevel);
     border-radius: 3px;
     flex-shrink:0;
   }
@@ -132,7 +112,6 @@
     text-decoration:none;
     font-size: 0.9rem;
     padding: 6px 2px;
-    transition: color 0.15s ease;
   }
   nav a.nav-link:hover{ color: var(--ink); }
 
@@ -149,320 +128,266 @@
     font-weight: 600;
     cursor: pointer;
     font-family: inherit;
-    transition: border-color 0.15s ease, color 0.15s ease;
   }
   .theme-toggle:hover{ border-color: var(--grass); color: var(--grass); }
-  .theme-toggle .icon{ font-size: 0.9rem; line-height:1; }
 
-  /* ---------- HERO ---------- */
   header.hero{
-    padding: 64px 0 56px;
+    padding: 30px 0 40px;
     text-align:center;
   }
-  .eyebrow{
-    display:inline-flex;
-    align-items:center;
-    gap: 8px;
-    font-size: 0.72rem;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    color: var(--gold);
-    background: rgba(224,178,60,0.08);
-    border: 1px solid rgba(224,178,60,0.35);
-    padding: 6px 14px;
-    border-radius: 999px;
-    margin-bottom: 28px;
-  }
-  .eyebrow .dot{
-    width:7px; height:7px; border-radius:50%;
-    background: var(--ink-dim);
-    box-shadow: 0 0 0 3px rgba(155,119,150,0.15);
-    transition: background 0.25s ease, box-shadow 0.25s ease;
-  }
-  .eyebrow .dot.online{ background: #4caf82; box-shadow: 0 0 0 3px rgba(76,175,130,0.2); }
-  .eyebrow .dot.offline{ background: #e0637c; box-shadow: 0 0 0 3px rgba(224,99,124,0.2); }
-
   h1.title{
-    font-size: clamp(1.8rem, 6vw, 3.1rem);
-    margin: 0 0 20px;
-    letter-spacing: 1px;
-    color: var(--ink);
-    text-shadow: var(--title-shadow);
+    font-size: clamp(1.5rem, 5vw, 2.2rem);
+    margin: 0 0 14px;
+    letter-spacing: 0.5px;
   }
-  h1.title span{ color: var(--grass); }
-
   .tagline{
-    max-width: 560px;
-    margin: 0 auto 36px;
     color: var(--ink-dim);
-    font-size: 1.05rem;
+    max-width: 480px;
+    margin: 0 auto;
   }
 
-  .cta-row{
-    display:flex;
-    justify-content:center;
-    gap: 14px;
-    flex-wrap: wrap;
-  }
-
-  .btn{
-    display:inline-flex;
-    align-items:center;
-    gap: 10px;
-    padding: 14px 26px;
-    border-radius: 8px;
-    font-weight: 700;
-    font-size: 0.98rem;
-    text-decoration:none;
-    border: 2px solid transparent;
-    cursor:pointer;
-    transition: transform 0.12s ease, filter 0.12s ease;
-  }
-  .btn:active{ transform: translateY(2px); }
-
-  .btn-discord{
-    background: #5865F2;
-    color: #fff;
-    box-shadow: 0 4px 0 #3a41b0;
-  }
-  .btn-discord:hover{ filter: brightness(1.08); }
-  .btn-discord:active{ box-shadow: 0 1px 0 #3a41b0; }
-
-  .btn-ghost{
-    background: transparent;
-    border-color: var(--line);
-    color: var(--ink);
-  }
-  .btn-ghost:hover{ border-color: var(--grass); color: var(--grass); }
-
-  /* ---------- CROSSPLAY BADGES ---------- */
-  .platforms{
-    display:flex;
-    justify-content:center;
-    gap: 12px;
-    margin-top: 40px;
-    flex-wrap: wrap;
-  }
-  .platform-chip{
-    display:flex;
-    align-items:center;
-    gap: 8px;
-    background: var(--bg-panel);
-    border: 1px solid var(--line);
-    padding: 8px 16px;
-    border-radius: 8px;
-    font-size: 0.85rem;
-    color: var(--ink-dim);
-  }
-  .platform-chip b{ color: var(--ink); font-weight:600; }
-  .chip-dot{ width:8px; height:8px; border-radius:2px; }
-
-  /* ---------- SECTION HEADINGS ---------- */
-  .section{ padding: 40px 0; }
-  .section-head{
-    display:flex;
-    align-items:baseline;
-    gap: 12px;
-    margin-bottom: 28px;
-  }
-  .section-head .num{
-    font-family:'JetBrains Mono', monospace;
-    color: var(--grass);
-    font-size: 0.85rem;
-  }
-  .section-head h2{
-    font-size: 1.4rem;
-    margin:0;
-    color: var(--ink);
-  }
-
-  /* ---------- CONNECT PANEL (signature element) ---------- */
-  .connect-panel{
+  .panel{
     background: var(--bg-panel);
     border: 1px solid var(--line);
     border-radius: 14px;
-    padding: 6px;
-    display:grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 6px;
+    padding: 28px;
+    margin-bottom: 24px;
   }
-  @media (max-width: 600px){
-    .connect-panel{ grid-template-columns: 1fr; }
+  .panel h2{
+    margin: 0 0 18px;
+    font-size: 1.05rem;
   }
-  .connect-row{
-    background: var(--bg-panel-raised);
-    border-radius: 10px;
-    padding: 20px 22px;
-    display:flex;
-    flex-direction:column;
-    gap: 10px;
-  }
-  .connect-label{
-    display:flex;
-    align-items:center;
-    gap: 8px;
-    font-size: 0.78rem;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    color: var(--ink-dim);
-  }
-  .connect-label .chip-dot.java{ background: var(--java); }
-  .connect-label .chip-dot.bedrock{ background: var(--bedrock); }
 
-  .connect-address{
-    display:flex;
-    align-items:center;
-    justify-content: space-between;
-    gap: 10px;
+  label{
+    display:block;
+    font-size: 0.82rem;
+    color: var(--ink-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+  }
+  .field{ margin-bottom: 18px; }
+  input[type="text"], input[type="datetime-local"]{
+    width: 100%;
     background: var(--bg);
     border: 1px solid var(--line);
     border-radius: 8px;
     padding: 12px 14px;
-  }
-  .connect-address code{
-    font-family: 'JetBrains Mono', monospace;
+    color: var(--ink);
+    font-family: inherit;
     font-size: 0.95rem;
-    color: var(--ink);
-    overflow-x:auto;
-    white-space: nowrap;
-    min-width: 0;
-    flex: 1;
   }
-  .copy-btn{
-    flex-shrink:0;
-    background: var(--stone);
-    border: none;
-    color: var(--ink);
-    padding: 7px 12px;
-    border-radius: 6px;
-    font-size: 0.78rem;
-    cursor:pointer;
-    font-weight:600;
-    transition: background 0.15s ease;
-  }
-  .copy-btn:hover{ background: var(--grass-dark); }
-  .connect-note{ font-size: 0.82rem; color: var(--ink-dim); margin:0; }
+  input:focus-visible{ outline: 2px solid var(--gold); outline-offset: 1px; }
 
-  .status-line{
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    gap: 8px;
+    padding: 13px 24px;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    border: none;
+    cursor:pointer;
+    background: var(--grass);
+    color: #fff;
+    box-shadow: 0 4px 0 var(--grass-dark);
+    font-family: inherit;
+  }
+  .btn:active{ transform: translateY(2px); box-shadow: 0 1px 0 var(--grass-dark); }
+
+  .btn-ghost{
+    background: transparent;
+    border: 1px solid var(--line);
+    color: var(--ink);
+    box-shadow: none;
+  }
+  .btn-ghost:hover{ border-color: var(--grass); color: var(--grass); }
+
+  .share-row{
+    display:flex;
+    gap: 8px;
+    margin-top: 4px;
+  }
+  .share-row input{ flex:1; }
+
+  /* --- countdown display --- */
+  #countdown-panel{ display:none; }
+  .event-name{
+    text-align:center;
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin: 0 0 6px;
+  }
+  .event-date{
+    text-align:center;
+    color: var(--ink-dim);
+    font-size: 0.88rem;
+    margin: 0 0 26px;
+  }
+  .countdown-grid{
+    display:grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-bottom: 8px;
+  }
+  .countdown-cell{
+    background: var(--bg-panel-raised);
+    border-radius: 10px;
+    padding: 18px 6px;
+    text-align:center;
+  }
+  .countdown-num{
+    font-family: 'JetBrains Mono', monospace;
+    font-size: clamp(1.5rem, 6vw, 2.2rem);
+    font-weight: 700;
+    color: var(--grass);
+    display:block;
+  }
+  .countdown-label{
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--ink-dim);
+  }
+  .countdown-status{
+    text-align:center;
+    margin-top: 18px;
+    font-weight: 600;
+    color: var(--gold);
+  }
+
+  .saved-list{
+    display:flex;
+    flex-wrap:wrap;
+    gap: 8px;
+  }
+  .saved-chip{
     display:flex;
     align-items:center;
     gap: 8px;
-    font-size: 0.85rem;
-    color: var(--ink-dim);
-  }
-  .status-dot{
-    width:8px; height:8px;
-    border-radius:50%;
-    background: var(--ink-dim);
-    flex-shrink:0;
-    transition: background 0.25s ease;
-  }
-  .status-dot.online{ background: #4caf82; }
-  .status-dot.offline{ background: #e0637c; }
-
-  .port-note{
-    text-align:center;
-    color: var(--ink-dim);
-    font-size: 0.85rem;
-    margin-top: 18px;
-  }
-
-  /* ---------- FEATURE GRID ---------- */
-  .features{
-    display:grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 14px;
-  }
-  @media (max-width: 560px){
-    .features{ grid-template-columns: 1fr; }
-  }
-  .feature-card{
-    background: var(--bg-panel);
+    background: var(--bg-panel-raised);
     border: 1px solid var(--line);
-    border-radius: 12px;
-    padding: 24px;
-    transition: transform 0.15s ease, border-color 0.15s ease;
+    border-radius: 999px;
+    padding: 8px 8px 8px 14px;
+    font-size: 0.85rem;
   }
-  .feature-card:hover{
-    transform: translateY(-2px);
-    border-color: var(--grass);
-  }
-  .feature-card .icon{
-    width: 38px; height:38px;
-    border-radius: 10px;
-    display:flex; align-items:center; justify-content:center;
-    background: color-mix(in srgb, var(--grass) 14%, transparent);
-    margin-bottom: 16px;
-    font-size: 1.15rem;
-  }
-  .feature-card h3{
-    margin: 0 0 6px;
-    font-size: 1.02rem;
-    color: var(--ink);
-  }
-  .feature-card p{
-    margin:0;
+  .saved-chip a{ color: var(--ink); text-decoration:none; }
+  .saved-chip a:hover{ color: var(--grass); }
+  .saved-chip button{
+    background: none;
+    border: none;
+    color: var(--ink-dim);
+    cursor:pointer;
     font-size: 0.9rem;
-    color: var(--ink-dim);
+    padding: 2px 6px;
+    line-height:1;
+  }
+  .saved-chip button:hover{ color: #e0637c; }
+  .empty-note{ color: var(--ink-dim); font-size: 0.88rem; }
+
+  .sr-only{
+    position: absolute;
+    width: 1px; height: 1px;
+    padding: 0; margin: -1px;
+    overflow: hidden;
+    clip: rect(0,0,0,0);
+    white-space: nowrap;
+    border: 0;
   }
 
-  /* ---------- INFO / RULES ---------- */
-  .info-grid{
-    display:grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 14px;
-  }
-  @media (max-width: 640px){ .info-grid{ grid-template-columns: 1fr; } }
-  .info-card{
-    background: var(--bg-panel);
-    border: 1px solid var(--line);
-    border-radius: 12px;
-    padding: 22px;
-  }
-  .info-card h3{
-    margin: 0 0 12px;
-    font-size: 0.95rem;
-    color: var(--gold);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-  }
-  .info-card ul{
-    margin:0; padding-left: 18px;
-    color: var(--ink-dim);
-    font-size: 0.92rem;
-  }
-  .info-card li{ margin-bottom: 8px; }
-  .info-card li:last-child{ margin-bottom:0; }
-
-  /* ---------- DISCORD CTA ---------- */
-  .discord-cta{
-    background: linear-gradient(135deg, var(--bg-panel-raised), var(--bg-panel));
-    border: 1px solid var(--line);
-    border-radius: 16px;
-    padding: 44px 32px;
+  .lock-panel{
     text-align:center;
+    max-width: 380px;
+    margin: 20px auto 24px;
+    padding: 40px 32px;
+    border-top: 3px solid var(--grass);
   }
-  .discord-cta h2{
-    margin: 0 0 10px;
+  .lock-panel .lock-icon{
+    width: 56px; height: 56px;
+    border-radius: 50%;
+    background: color-mix(in srgb, var(--grass) 14%, transparent);
+    display:flex; align-items:center; justify-content:center;
     font-size: 1.5rem;
+    margin: 0 auto 18px;
   }
-  .discord-cta p{
-    color: var(--ink-dim);
-    margin: 0 0 26px;
-    max-width: 460px;
-    margin-left:auto; margin-right:auto;
-  }
-
-  /* ---------- FOOTER ---------- */
-  footer{
-    padding: 40px 0 60px;
-    text-align:center;
-    color: var(--ink-dim);
+  .lock-panel h2{
+    font-family: 'Press Start 2P', monospace;
     font-size: 0.85rem;
-    border-top: 1px solid var(--line);
-    margin-top: 40px;
+    letter-spacing: 0.5px;
+    margin: 0 0 12px;
   }
-  footer a{ color: var(--grass); text-decoration:none; }
+  .lock-panel p{ color: var(--ink-dim); font-size: 0.88rem; margin: 0 0 22px; line-height: 1.6; }
+  .lock-panel .field{ max-width: 100%; margin: 0 0 16px; text-align:left; }
+  .lock-panel .btn{ width: 100%; justify-content:center; }
+
+  .password-field{ position: relative; }
+  .password-field input{
+    width: 100%;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 13px 64px 13px 42px;
+    color: var(--ink);
+    font-family: inherit;
+    font-size: 1rem;
+    letter-spacing: 3px;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  }
+  .password-field input:focus-visible{
+    outline: none;
+    border-color: var(--grass);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--grass) 20%, transparent);
+  }
+  .password-field .password-icon{
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 0.9rem;
+    opacity: 0.55;
+    pointer-events: none;
+  }
+  .password-field .password-toggle{
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--ink-dim);
+    font-size: 0.8rem;
+    font-weight: 600;
+    font-family: inherit;
+    padding: 6px 8px;
+    border-radius: 6px;
+  }
+  .password-field .password-toggle:hover{ color: var(--grass); }
+  .lock-error{
+    color: #e0637c;
+    font-size: 0.85rem;
+    margin: 14px 0 0;
+    min-height: 1.2em;
+  }
+  .admin-header{
+    display:flex;
+    align-items:center;
+    justify-content: space-between;
+    margin-bottom: 18px;
+  }
+  .admin-header h2{ margin:0; }
+  .link-btn{
+    background:none;
+    border:none;
+    color: var(--ink-dim);
+    font-size: 0.82rem;
+    cursor:pointer;
+    text-decoration: underline;
+    font-family: inherit;
+    padding:0;
+  }
+  .link-btn:hover{ color: var(--grass); }
 
   .toast{
     position: fixed;
@@ -480,34 +405,21 @@
     transition: opacity 0.2s ease, transform 0.2s ease;
     z-index: 10;
   }
-  .toast.show{
-    opacity: 1;
-    transform: translateX(-50%) translateY(0);
-  }
+  .toast.show{ opacity: 1; transform: translateX(-50%) translateY(0); }
 
-  @media (prefers-reduced-motion: reduce){
-    html{ scroll-behavior: auto; }
-    *{ transition: none !important; }
-  }
-
-  /* ---------- MOBILE ---------- */
   @media (max-width: 480px){
-    .wrap{ padding: 0 16px; }
-    header.hero{ padding: 40px 0 40px; }
-    .section{ padding: 32px 0; }
-    .cta-row{ flex-direction: column; align-items:stretch; }
-    .cta-row .btn{ justify-content:center; }
-    .platforms{ flex-direction: column; align-items:stretch; }
-    .platform-chip{ justify-content:center; }
-    .discord-cta{ padding: 32px 20px; }
-    .connect-row{ padding: 18px 16px; }
-    .feature-card{ padding: 20px; }
-    .toast{ width: calc(100% - 32px); text-align:center; }
+    .countdown-grid{ grid-template-columns: repeat(2, 1fr); }
   }
 
-  :focus-visible{
-    outline: 2px solid var(--gold);
-    outline-offset: 2px;
+  @media (max-width: 480px){
+    .wrap{ padding: 0 16px 40px; }
+    .panel{ padding: 22px; }
+    .share-row{ flex-direction: column; align-items:stretch; }
+    .share-row .btn{ justify-content:center; }
+    #generate-btn{ width: 100%; justify-content:center; }
+    .admin-header{ flex-wrap: wrap; gap: 8px; }
+    .toast{ width: calc(100% - 32px); text-align:center; }
+    .lock-panel{ padding: 32px 22px; }
   }
 </style>
 </head>
@@ -516,14 +428,12 @@
 <div class="wrap">
 
   <nav>
-    <a href="#" class="brand">
+    <a href="index.html" class="brand">
       <span class="brand-block" aria-hidden="true"></span>
       ScieCraft
     </a>
     <div class="nav-links">
-      <a href="#connect" class="nav-link">Connect</a>
-      <a href="#rules" class="nav-link">Info</a>
-      <a href="countdown.html" class="nav-link">Events</a>
+      <a href="index.html" class="nav-link">Back to site</a>
       <button class="theme-toggle" id="theme-toggle" aria-label="Switch between dark and light mode">
         <span class="icon" id="theme-icon">☀️</span><span id="theme-label">Light</span>
       </button>
@@ -531,226 +441,337 @@
   </nav>
 
   <header class="hero">
-    <div class="eyebrow"><span class="dot" id="global-status-dot"></span> <span id="global-status-text">Checking server status…</span></div>
-    <h1 class="title pixel">Scie<span>Craft</span></h1>
-    <p class="tagline">A crossplay survival server. Java and Bedrock players build, trade, and explore the same world, side by side.</p>
-
-    <div class="cta-row">
-      <a class="btn btn-discord" href="https://discord.gg/YOUR-INVITE-CODE" target="_blank" rel="noopener">
-        Join the Discord
-      </a>
-      <a class="btn btn-ghost" href="#connect">Get the server address</a>
-    </div>
-
-    <div class="platforms">
-      <div class="platform-chip"><span class="chip-dot" style="background:var(--java)"></span> <b>Java Edition</b> supported</div>
-      <div class="platform-chip"><span class="chip-dot" style="background:var(--bedrock)"></span> <b>Bedrock Edition</b> supported</div>
-    </div>
+    <h1 class="title pixel">Event Countdown</h1>
+    <p class="tagline">Set a date, get a countdown, and share the link on Discord so everyone can see exactly when an event starts.</p>
   </header>
+  <div style="text-align:right;margin-bottom:18px;">
+    <button class="btn btn-ghost" id="show-admin-btn" style="display:none;">🔒 Staff Access</button>
+  </div>
 
-  <section class="section" id="connect">
-    <div class="section-head">
-      <span class="num pixel">01</span>
-      <h2>Connect to the server</h2>
+
+  <div class="panel" id="countdown-panel">
+    <p class="event-name" id="display-name"></p>
+    <p class="event-date" id="display-date"></p>
+    <div class="countdown-grid">
+      <div class="countdown-cell"><span class="countdown-num" id="days">00</span><span class="countdown-label">Days</span></div>
+      <div class="countdown-cell"><span class="countdown-num" id="hours">00</span><span class="countdown-label">Hours</span></div>
+      <div class="countdown-cell"><span class="countdown-num" id="minutes">00</span><span class="countdown-label">Minutes</span></div>
+      <div class="countdown-cell"><span class="countdown-num" id="seconds">00</span><span class="countdown-label">Seconds</span></div>
     </div>
+    <p class="countdown-status" id="countdown-status"></p>
+  </div>
 
-    <div class="connect-panel">
-      <div class="connect-row">
-        <div class="connect-label"><span class="chip-dot java"></span> Java Edition</div>
-        <div class="connect-address">
-          <code id="java-ip">play.sciecraft.net</code>
-          <button class="copy-btn" onclick="copyAddress('java-ip', this)">Copy</button>
+  <div class="panel lock-panel" id="lock-screen" style="display:none;">
+    <div class="lock-icon">🔒</div>
+    <h2>Staff access</h2>
+    <p>Enter the password to create or manage countdowns. Anyone can still view a countdown from a shared link without it.</p>
+    <div class="field">
+      <label for="admin-password" class="sr-only">Password</label>
+      <div class="password-field">
+        <span class="password-icon" aria-hidden="true">🔒</span>
+        <input type="password" id="admin-password" placeholder="Enter password">
+        <button type="button" class="password-toggle" id="toggle-password">Show</button>
+      </div>
+    </div>
+    <button class="btn" id="unlock-btn">Unlock</button>
+    <p class="lock-error" id="lock-error"></p>
+  </div>
+
+  <div id="admin-area" style="display:none;">
+    <div class="panel">
+      <div class="admin-header">
+        <h2>Create a countdown</h2>
+        <button class="link-btn" id="lock-btn">Lock</button>
+      </div>
+      <div class="field">
+        <label for="event-name">Event name</label>
+        <input type="text" id="event-name" placeholder="e.g. Server Wipe, Build Contest, Season 2 Launch" maxlength="60">
+      </div>
+      <div class="field">
+        <label for="event-date">Date and time</label>
+        <input type="datetime-local" id="event-date">
+      </div>
+      <button class="btn" id="generate-btn">Generate countdown</button>
+
+      <div id="share-section" style="display:none; margin-top:22px;">
+        <label>Shareable link</label>
+        <div class="share-row">
+          <input type="text" id="share-link" readonly>
+          <button class="btn btn-ghost" id="copy-link-btn">Copy</button>
         </div>
-        <p class="connect-note">Add as a server in your Multiplayer menu.</p>
       </div>
+    </div>
 
-      <div class="connect-row">
-        <div class="connect-label"><span class="chip-dot bedrock"></span> Bedrock Edition</div>
-        <div class="connect-address">
-          <code id="bedrock-ip">play.sciecraft.net</code>
-          <button class="copy-btn" onclick="copyAddress('bedrock-ip', this)">Copy</button>
-        </div>
-        <div class="connect-address">
-          <code id="bedrock-port">19132</code>
-          <button class="copy-btn" onclick="copyAddress('bedrock-port', this)">Copy</button>
-        </div>
-        <p class="connect-note">Add as a Server in the Bedrock Friends tab, using the address and port above.</p>
+    <div class="panel">
+      <h2>Saved on this device</h2>
+      <div class="saved-list" id="saved-list">
+        <p class="empty-note" id="empty-note">Countdowns you generate here are also saved to this browser, so you can find them again quickly.</p>
       </div>
     </div>
-    <p class="port-note">Having trouble connecting? Ask in the <a href="https://discord.gg/YOUR-INVITE-CODE" style="color:var(--grass)" target="_blank" rel="noopener">#support channel</a> on Discord.</p>
-  </section>
-
-  <section class="section" id="features">
-    <div class="section-head">
-      <span class="num pixel">02</span>
-      <h2>What's here</h2>
-    </div>
-    <div class="features">
-      <div class="feature-card">
-        <div class="icon">⛏️</div>
-        <h3>Close to vanilla</h3>
-        <p>Survival as Minecraft intends it. A couple of small plugins keep things running, nothing that changes how the game plays.</p>
-      </div>
-      <div class="feature-card">
-        <div class="icon">🔀</div>
-        <h3>True crossplay</h3>
-        <p>Java and Bedrock players share one world and one community.</p>
-      </div>
-      <div class="feature-card">
-        <div class="icon">🛡️</div>
-        <h3>Active moderation</h3>
-        <p>A small staff team keeps grief and cheating out, so builds stay safe.</p>
-      </div>
-      <div class="feature-card">
-        <div class="icon">💬</div>
-        <h3>Friendly community</h3>
-        <p>New players get help finding their feet from day one.</p>
-      </div>
-    </div>
-  </section>
-
-  <section class="section" id="rules">
-    <div class="section-head">
-      <span class="num pixel">03</span>
-      <h2>Before you join</h2>
-    </div>
-    <div class="info-grid">
-      <div class="info-card">
-        <h3>Requirements</h3>
-        <ul>
-          <li>Minecraft Java Edition or Bedrock Edition, latest release</li>
-          <li>A Discord account, to reach staff and see announcements</li>
-          <li>Read the rules pinned in <code>#rules</code> on Discord</li>
-        </ul>
-      </div>
-      <div class="info-card">
-        <h3>House rules</h3>
-        <ul>
-          <li>No griefing, stealing, or cheating</li>
-          <li>Keep chat respectful, no harassment</li>
-          <li>Ask before building near someone else's base</li>
-          <li>Ask staff before large terrain edits near spawn</li>
-        </ul>
-      </div>
-    </div>
-  </section>
-
-  <section class="section">
-    <div class="discord-cta">
-      <h2 class="pixel" style="font-size:1.05rem;">Join the community</h2>
-      <p>Get your whitelist, chat with other players, and hear about events first. Everything happens on Discord.</p>
-      <a class="btn btn-discord" href="https://discord.gg/YOUR-INVITE-CODE" target="_blank" rel="noopener">
-        Join the Discord
-      </a>
-    </div>
-  </section>
-
-  <footer>
-    <p>ScieCraft is an independent community server, not affiliated with Mojang or Microsoft.</p>
-    <p>Minecraft is a trademark of Mojang Studios.</p>
-  </footer>
+  </div>
 
 </div>
 
-<div class="toast" id="toast">Copied to clipboard</div>
+<div class="toast" id="toast"></div>
 
 <script>
-function copyAddress(id, btn) {
-  const text = document.getElementById(id).innerText;
-  navigator.clipboard.writeText(text).then(() => {
-    const original = btn.innerText;
-    btn.innerText = "Copied";
-    showToast("Copied to clipboard");
-    setTimeout(() => { btn.innerText = original; }, 1600);
-  }).catch(() => {
-    showToast("Couldn't copy — copy it manually");
-  });
-}
-
-function showToast(message) {
-  const toast = document.getElementById('toast');
-  toast.innerText = message;
-  toast.classList.add('show');
-  clearTimeout(window._toastTimer);
-  window._toastTimer = setTimeout(() => toast.classList.remove('show'), 1800);
-}
-
-// --- Live server status, via api.mcstatus.io (free, no key needed) ---
-function fetchStatus(edition, address) {
-  const url = `https://api.mcstatus.io/v2/status/${edition}/${encodeURIComponent(address)}`;
-  return fetch(url).then(res => {
-    if (!res.ok) throw new Error('bad response');
-    return res.json();
-  });
-}
-
-async function refreshStatus() {
-  const javaHost = document.getElementById('java-ip').innerText.trim();
-  const bedrockHost = document.getElementById('bedrock-ip').innerText.trim();
-  const bedrockPort = document.getElementById('bedrock-port').innerText.trim();
-
-  const globalDot = document.getElementById('global-status-dot');
-  const globalText = document.getElementById('global-status-text');
-
-  let javaData = null;
-  let bedrockData = null;
-
-  try { javaData = await fetchStatus('java', javaHost); } catch (e) { /* offline or unreachable */ }
-  try { bedrockData = await fetchStatus('bedrock', `${bedrockHost}:${bedrockPort}`); } catch (e) { /* offline or unreachable */ }
-
-  const anyOnline = (javaData && javaData.online) || (bedrockData && bedrockData.online);
-  const anyChecked = javaData || bedrockData;
-
-  // Both editions point at the same server, so player counts should match.
-  // Prefer whichever response came back online with player data, Java first.
-  const playerSource = (javaData && javaData.online && javaData.players) ? javaData.players
-                      : (bedrockData && bedrockData.online && bedrockData.players) ? bedrockData.players
-                      : null;
-
-  if (anyOnline) {
-    globalDot.classList.remove('offline');
-    globalDot.classList.add('online');
-    globalText.textContent = playerSource
-      ? `Online — ${playerSource.online}/${playerSource.max} players`
-      : 'Server online';
-  } else if (anyChecked) {
-    globalDot.classList.remove('online');
-    globalDot.classList.add('offline');
-    globalText.textContent = 'Server offline';
-  } else {
-    globalText.textContent = 'Status unavailable';
-  }
-}
-
-refreshStatus();
-setInterval(refreshStatus, 60000);
-
-// --- Theme toggle (defaults to dark, remembers choice) ---
-(function () {
-  const toggle = document.getElementById('theme-toggle');
-  const icon = document.getElementById('theme-icon');
-  const label = document.getElementById('theme-label');
-
-  function render(theme) {
-    if (theme === 'light') {
-      icon.textContent = '🌙';
-      label.textContent = 'Dark';
-    } else {
-      icon.textContent = '☀️';
-      label.textContent = 'Light';
+  // ---------- Theme toggle ----------
+  (function () {
+    const toggle = document.getElementById('theme-toggle');
+    const icon = document.getElementById('theme-icon');
+    const label = document.getElementById('theme-label');
+    function render(theme) {
+      if (theme === 'light') { icon.textContent = '🌙'; label.textContent = 'Dark'; }
+      else { icon.textContent = '☀️'; label.textContent = 'Light'; }
     }
+    render(document.documentElement.getAttribute('data-theme'));
+    toggle.addEventListener('click', () => {
+      const current = document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+      const next = current === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem('sciecraft-theme', next);
+      render(next);
+    });
+  })();
+
+  function showToast(message) {
+    const toast = document.getElementById('toast');
+    toast.textContent = message;
+    toast.classList.add('show');
+    clearTimeout(window._toastTimer);
+    window._toastTimer = setTimeout(() => toast.classList.remove('show'), 1800);
   }
 
-  render(document.documentElement.getAttribute('data-theme'));
+  // ---------- Password gate (deterrent only — see note below) ----------
+  // The password itself is never stored here, only its SHA-256 hash.
+  // To set your own password: open any browser console and run
+  //   crypto.subtle.digest('SHA-256', new TextEncoder().encode('yourpassword'))
+  //     .then(b => console.log(Array.from(new Uint8Array(b)).map(x => x.toString(16).padStart(2,'0')).join('')))
+  // then paste the printed hash below. This keeps the real password off the page,
+  // but a hash in client-side code is still just a speed bump, not real security —
+  // anyone with dev tools can bypass the check entirely. Don't rely on this alone
+  // for anything sensitive.
+  const ADMIN_PASSWORD_HASH = '057ba03d6c44104863dc7361fe4578965d1887360f90a0895882e58a6248fc86'; // default: "changeme"
 
-  toggle.addEventListener('click', () => {
-    const current = document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
-    const next = current === 'dark' ? 'light' : 'dark';
-    document.documentElement.setAttribute('data-theme', next);
-    localStorage.setItem('sciecraft-theme', next);
-    render(next);
+  async function sha256Hex(text) {
+    const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text));
+    return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+  }
+
+  function showAdminArea() {
+    document.getElementById('lock-screen').style.display = 'none';
+    document.getElementById('admin-area').style.display = 'block';
+  }
+  function showLockScreen() {
+    document.getElementById('admin-area').style.display = 'none';
+    document.getElementById('lock-screen').style.display = 'block';
+    document.getElementById('show-admin-btn').style.display = 'none';
+    document.getElementById('admin-password').value = '';
+  }
+
+  
+
+  document.getElementById('unlock-btn').addEventListener('click', async () => {
+    const input = document.getElementById('admin-password').value;
+    const errorEl = document.getElementById('lock-error');
+    const hash = await sha256Hex(input);
+    if (hash === ADMIN_PASSWORD_HASH) {
+      sessionStorage.setItem('sciecraft-admin-unlocked', 'true');
+      errorEl.textContent = '';
+      showAdminArea();
+    } else {
+      errorEl.textContent = 'Incorrect password.';
+    }
   });
-})();
+
+  document.getElementById('admin-password').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') document.getElementById('unlock-btn').click();
+  });
+
+  document.getElementById('toggle-password').addEventListener('click', () => {
+    const input = document.getElementById('admin-password');
+    const btn = document.getElementById('toggle-password');
+    if (input.type === 'password') {
+      input.type = 'text';
+      btn.textContent = 'Hide';
+    } else {
+      input.type = 'password';
+      btn.textContent = 'Show';
+    }
+    input.focus();
+  });
+
+  document.getElementById('lock-btn').addEventListener('click', () => {
+    sessionStorage.removeItem('sciecraft-admin-unlocked');
+    showLockScreen();
+  });
+
+  document.getElementById('show-admin-btn').addEventListener('click', () => {
+    document.getElementById('show-admin-btn').style.display = 'none';
+    showLockScreen();
+  });
+
+  // ---------- Countdown logic ----------
+  let tickHandle = null;
+
+  function startCountdown(name, isoDate) {
+    const target = new Date(isoDate).getTime();
+    if (isNaN(target)) return;
+
+    document.getElementById('countdown-panel').style.display = 'block';
+    document.getElementById('display-name').textContent = name || 'Untitled event';
+    document.getElementById('display-date').textContent = new Date(isoDate).toLocaleString(undefined, {
+      weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit'
+    });
+
+    if (tickHandle) clearInterval(tickHandle);
+
+    function tick() {
+      const now = Date.now();
+      const diff = target - now;
+      const statusEl = document.getElementById('countdown-status');
+
+      if (diff <= 0) {
+        document.getElementById('days').textContent = '00';
+        document.getElementById('hours').textContent = '00';
+        document.getElementById('minutes').textContent = '00';
+        document.getElementById('seconds').textContent = '00';
+        statusEl.textContent = "It's happening now!";
+        clearInterval(tickHandle);
+        return;
+      }
+
+      const days = Math.floor(diff / 86400000);
+      const hours = Math.floor((diff % 86400000) / 3600000);
+      const minutes = Math.floor((diff % 3600000) / 60000);
+      const seconds = Math.floor((diff % 60000) / 1000);
+
+      document.getElementById('days').textContent = String(days).padStart(2, '0');
+      document.getElementById('hours').textContent = String(hours).padStart(2, '0');
+      document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
+      document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
+      statusEl.textContent = '';
+    }
+
+    tick();
+    tickHandle = setInterval(tick, 1000);
+  }
+
+  function buildShareUrl(name, isoDate) {
+    const url = new URL(window.location.href);
+    url.search = '';
+    url.searchParams.set('event', name);
+    url.searchParams.set('date', isoDate);
+    return url.toString();
+  }
+
+  function saveCountdown(name, isoDate, url) {
+    let saved = [];
+    try { saved = JSON.parse(localStorage.getItem('sciecraft-countdowns') || '[]'); } catch (e) { saved = []; }
+    saved = saved.filter(c => !(c.name === name && c.date === isoDate));
+    saved.unshift({ name, date: isoDate, url });
+    saved = saved.slice(0, 12);
+    localStorage.setItem('sciecraft-countdowns', JSON.stringify(saved));
+    renderSavedList();
+  }
+
+  function removeCountdown(index) {
+    let saved = [];
+    try { saved = JSON.parse(localStorage.getItem('sciecraft-countdowns') || '[]'); } catch (e) { saved = []; }
+    saved.splice(index, 1);
+    localStorage.setItem('sciecraft-countdowns', JSON.stringify(saved));
+    renderSavedList();
+  }
+
+  function renderSavedList() {
+    let saved = [];
+    try { saved = JSON.parse(localStorage.getItem('sciecraft-countdowns') || '[]'); } catch (e) { saved = []; }
+    const list = document.getElementById('saved-list');
+    const emptyNote = document.getElementById('empty-note');
+
+    if (saved.length === 0) {
+      list.innerHTML = '';
+      list.appendChild(emptyNote);
+      return;
+    }
+
+    list.innerHTML = '';
+    saved.forEach((item, index) => {
+      const chip = document.createElement('div');
+      chip.className = 'saved-chip';
+      const link = document.createElement('a');
+      link.href = item.url;
+      link.textContent = item.name || 'Untitled event';
+      const remove = document.createElement('button');
+      remove.textContent = '✕';
+      remove.setAttribute('aria-label', 'Remove saved countdown');
+      remove.addEventListener('click', () => removeCountdown(index));
+      chip.appendChild(link);
+      chip.appendChild(remove);
+      list.appendChild(chip);
+    });
+  }
+
+  document.getElementById('generate-btn').addEventListener('click', () => {
+    const name = document.getElementById('event-name').value.trim();
+    const dateVal = document.getElementById('event-date').value;
+
+    if (!dateVal) {
+      showToast('Pick a date and time first');
+      return;
+    }
+
+    const isoDate = new Date(dateVal).toISOString();
+    const url = buildShareUrl(name, isoDate);
+
+    document.getElementById('share-section').style.display = 'block';
+    document.getElementById('share-link').value = url;
+
+    startCountdown(name, isoDate);
+    saveCountdown(name, isoDate, url);
+
+    history.replaceState(null, '', url);
+  });
+
+  document.getElementById('copy-link-btn').addEventListener('click', () => {
+    const input = document.getElementById('share-link');
+    input.select();
+    navigator.clipboard.writeText(input.value).then(() => {
+      showToast('Link copied — paste it on Discord');
+    }).catch(() => {
+      showToast("Couldn't copy — select and copy manually");
+    });
+  });
+
+  // ---------- Load from URL on page open ----------
+  (function initFromUrl() {
+    const params = new URLSearchParams(window.location.search);
+    const eventName = params.get('event');
+    const eventDate = params.get('date');
+
+    if (eventDate) {
+      document.getElementById('show-admin-btn').style.display='inline-flex';
+      document.getElementById('lock-screen').style.display='none';
+      const d = new Date(eventDate);
+      if (!isNaN(d.getTime())) {
+        document.getElementById('event-name').value = eventName || '';
+        // datetime-local expects local time without timezone
+        const local = new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
+        document.getElementById('event-date').value = local;
+
+        const url = buildShareUrl(eventName || '', d.toISOString());
+        document.getElementById('share-section').style.display = 'block';
+        document.getElementById('share-link').value = url;
+
+        startCountdown(eventName, d.toISOString());
+      }
+    } else {
+      if (sessionStorage.getItem('sciecraft-admin-unlocked') === 'true') showAdminArea();
+      else showLockScreen();
+    }
+
+    renderSavedList();
+  })();
 </script>
 
 </body>
