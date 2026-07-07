@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Event Countdown — ScieCraft</title>
+<meta name="description" content="Create and share a countdown timer for ScieCraft server events.">
+<script>
+  (function () {
+    var saved = localStorage.getItem('sciecraft-theme');
+    var theme = saved === 'light' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', theme);
+  })();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #1c0f18;
+    --bg-panel: #271521;
+    --bg-panel-raised: #331c2b;
+    --grass: #f0568e;
+    --grass-dark: #c93d70;
+    --gold: #f4a8c9;
+    --ink: #f7e9f0;
+    --ink-dim: #c9a4bb;
+    --stone: #402336;
+    --line: #40233a;
+  }
+  html[data-theme="light"]{
+    --bg: #fdf2f8;
+    --bg-panel: #ffffff;
+    --bg-panel-raised: #fdeaf3;
+    --grass: #ec6fa8;
+    --grass-dark: #d9548e;
+    --gold: #b592d6;
+    --ink: #5b3355;
+    --ink-dim: #9b7796;
+    --stone: #fbe1ee;
+    --line: #f6cfe3;
+  }
+
+  * { box-sizing: border-box; }
+
+  body{
+    margin:0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Inter', system-ui, sans-serif;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    transition: background-color 0.2s ease;
+  }
+
+  body::before{
+    content:"";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.05;
+    background-image:
+      linear-gradient(var(--line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size: 32px 32px;
+  }
+
+  .wrap{
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 0 24px 60px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .pixel{ font-family: 'Press Start 2P', monospace; line-height: 1.6; }
+
+  nav{
+    display:flex;
+    align-items:center;
+    justify-content: space-between;
+    padding: 22px 0;
+  }
+  .brand{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-weight:800;
+    font-size: 1.05rem;
+    color: var(--ink);
+    text-decoration:none;
+  }
+  .brand-block{
+    width: 20px; height:20px;
+    background: var(--grass);
+    border-radius: 3px;
+    flex-shrink:0;
+  }
+  nav a.nav-link{
+    color: var(--ink-dim);
+    text-decoration:none;
+    font-size: 0.9rem;
+    margin-left: 20px;
+  }
+  nav a.nav-link:hover{ color: var(--ink); }
+
+  .theme-toggle{
+    display:inline-flex;
+    align-items:center;
+    gap: 7px;
+    margin-left: 20px;
+    background: var(--bg-panel);
+    border: 1px solid var(--line);
+    color: var(--ink);
+    padding: 7px 13px;
+    border-radius: 999px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .theme-toggle:hover{ border-color: var(--grass); color: var(--grass); }
+
+  header.hero{
+    padding: 30px 0 40px;
+    text-align:center;
+  }
+  h1.title{
+    font-size: clamp(1.5rem, 5vw, 2.2rem);
+    margin: 0 0 14px;
+    letter-spacing: 0.5px;
+  }
+  .tagline{
+    color: var(--ink-dim);
+    max-width: 480px;
+    margin: 0 auto;
+  }
+
+  .panel{
+    background: var(--bg-panel);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 28px;
+    margin-bottom: 24px;
+  }
+  .panel h2{
+    margin: 0 0 18px;
+    font-size: 1.05rem;
+  }
+
+  label{
+    display:block;
+    font-size: 0.82rem;
+    color: var(--ink-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+  }
+  .field{ margin-bottom: 18px; }
+  input[type="text"], input[type="datetime-local"]{
+    width: 100%;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 12px 14px;
+    color: var(--ink);
+    font-family: inherit;
+    font-size: 0.95rem;
+  }
+  input:focus-visible{ outline: 2px solid var(--gold); outline-offset: 1px; }
+
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    gap: 8px;
+    padding: 13px 24px;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    border: none;
+    cursor:pointer;
+    background: var(--grass);
+    color: #fff;
+    box-shadow: 0 4px 0 var(--grass-dark);
+    font-family: inherit;
+  }
+  .btn:active{ transform: translateY(2px); box-shadow: 0 1px 0 var(--grass-dark); }
+
+  .btn-ghost{
+    background: transparent;
+    border: 1px solid var(--line);
+    color: var(--ink);
+    box-shadow: none;
+  }
+  .btn-ghost:hover{ border-color: var(--grass); color: var(--grass); }
+
+  .share-row{
+    display:flex;
+    gap: 8px;
+    margin-top: 4px;
+  }
+  .share-row input{ flex:1; }
+
+  /* --- countdown display --- */
+  #countdown-panel{ display:none; }
+  .event-name{
+    text-align:center;
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin: 0 0 6px;
+  }
+  .event-date{
+    text-align:center;
+    color: var(--ink-dim);
+    font-size: 0.88rem;
+    margin: 0 0 26px;
+  }
+  .countdown-grid{
+    display:grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-bottom: 8px;
+  }
+  .countdown-cell{
+    background: var(--bg-panel-raised);
+    border-radius: 10px;
+    padding: 18px 6px;
+    text-align:center;
+  }
+  .countdown-num{
+    font-family: 'JetBrains Mono', monospace;
+    font-size: clamp(1.5rem, 6vw, 2.2rem);
+    font-weight: 700;
+    color: var(--grass);
+    display:block;
+  }
+  .countdown-label{
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--ink-dim);
+  }
+  .countdown-status{
+    text-align:center;
+    margin-top: 18px;
+    font-weight: 600;
+    color: var(--gold);
+  }
+
+  .saved-list{
+    display:flex;
+    flex-wrap:wrap;
+    gap: 8px;
+  }
+  .saved-chip{
+    display:flex;
+    align-items:center;
+    gap: 8px;
+    background: var(--bg-panel-raised);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 8px 8px 8px 14px;
+    font-size: 0.85rem;
+  }
+  .saved-chip a{ color: var(--ink); text-decoration:none; }
+  .saved-chip a:hover{ color: var(--grass); }
+  .saved-chip button{
+    background: none;
+    border: none;
+    color: var(--ink-dim);
+    cursor:pointer;
+    font-size: 0.9rem;
+    padding: 2px 6px;
+    line-height:1;
+  }
+  .saved-chip button:hover{ color: #e0637c; }
+  .empty-note{ color: var(--ink-dim); font-size: 0.88rem; }
+
+  .sr-only{
+    position: absolute;
+    width: 1px; height: 1px;
+    padding: 0; margin: -1px;
+    overflow: hidden;
+    clip: rect(0,0,0,0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  .lock-panel{
+    text-align:center;
+  }
+  .lock-panel .lock-icon{ font-size: 1.6rem; margin-bottom: 10px; }
+  .lock-panel p{ color: var(--ink-dim); font-size: 0.9rem; margin: 0 0 18px; }
+  .lock-panel .field{ max-width: 280px; margin: 0 auto 14px; text-align:left; }
+  .lock-error{
+    color: #e0637c;
+    font-size: 0.85rem;
+    margin: 10px 0 0;
+    min-height: 1.2em;
+  }
+  .admin-header{
+    display:flex;
+    align-items:center;
+    justify-content: space-between;
+    margin-bottom: 18px;
+  }
+  .admin-header h2{ margin:0; }
+  .link-btn{
+    background:none;
+    border:none;
+    color: var(--ink-dim);
+    font-size: 0.82rem;
+    cursor:pointer;
+    text-decoration: underline;
+    font-family: inherit;
+    padding:0;
+  }
+  .link-btn:hover{ color: var(--grass); }
+
+  .toast{
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: var(--grass-dark);
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    opacity: 0;
+    pointer-events:none;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    z-index: 10;
+  }
+  .toast.show{ opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  @media (max-width: 480px){
+    .countdown-grid{ grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <nav>
+    <a href="index.html" class="brand">
+      <span class="brand-block" aria-hidden="true"></span>
+      ScieCraft
+    </a>
+    <div>
+      <a href="index.html" class="nav-link">Back to site</a>
+      <button class="theme-toggle" id="theme-toggle" aria-label="Switch between dark and light mode">
+        <span class="icon" id="theme-icon">☀️</span><span id="theme-label">Light</span>
+      </button>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <h1 class="title pixel">Event Countdown</h1>
+    <p class="tagline">Set a date, get a countdown, and share the link on Discord so everyone can see exactly when an event starts.</p>
+  </header>
+
+  <div class="panel" id="countdown-panel">
+    <p class="event-name" id="display-name"></p>
+    <p class="event-date" id="display-date"></p>
+    <div class="countdown-grid">
+      <div class="countdown-cell"><span class="countdown-num" id="days">00</span><span class="countdown-label">Days</span></div>
+      <div class="countdown-cell"><span class="countdown-num" id="hours">00</span><span class="countdown-label">Hours</span></div>
+      <div class="countdown-cell"><span class="countdown-num" id="minutes">00</span><span class="countdown-label">Minutes</span></div>
+      <div class="countdown-cell"><span class="countdown-num" id="seconds">00</span><span class="countdown-label">Seconds</span></div>
+    </div>
+    <p class="countdown-status" id="countdown-status"></p>
+  </div>
+
+  <div class="panel lock-panel" id="lock-screen">
+    <div class="lock-icon">🔒</div>
+    <h2>Staff access</h2>
+    <p>Enter the password to create or manage countdowns. Anyone can still view a countdown from a shared link without it.</p>
+    <div class="field">
+      <label for="admin-password" class="sr-only">Password</label>
+      <input type="password" id="admin-password" placeholder="Password">
+    </div>
+    <button class="btn" id="unlock-btn">Unlock</button>
+    <p class="lock-error" id="lock-error"></p>
+  </div>
+
+  <div id="admin-area" style="display:none;">
+    <div class="panel">
+      <div class="admin-header">
+        <h2>Create a countdown</h2>
+        <button class="link-btn" id="lock-btn">Lock</button>
+      </div>
+      <div class="field">
+        <label for="event-name">Event name</label>
+        <input type="text" id="event-name" placeholder="e.g. Server Wipe, Build Contest, Season 2 Launch" maxlength="60">
+      </div>
+      <div class="field">
+        <label for="event-date">Date and time</label>
+        <input type="datetime-local" id="event-date">
+      </div>
+      <button class="btn" id="generate-btn">Generate countdown</button>
+
+      <div id="share-section" style="display:none; margin-top:22px;">
+        <label>Shareable link</label>
+        <div class="share-row">
+          <input type="text" id="share-link" readonly>
+          <button class="btn btn-ghost" id="copy-link-btn">Copy</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h2>Saved on this device</h2>
+      <div class="saved-list" id="saved-list">
+        <p class="empty-note" id="empty-note">Countdowns you generate here are also saved to this browser, so you can find them again quickly.</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  // ---------- Theme toggle ----------
+  (function () {
+    const toggle = document.getElementById('theme-toggle');
+    const icon = document.getElementById('theme-icon');
+    const label = document.getElementById('theme-label');
+    function render(theme) {
+      if (theme === 'light') { icon.textContent = '🌙'; label.textContent = 'Dark'; }
+      else { icon.textContent = '☀️'; label.textContent = 'Light'; }
+    }
+    render(document.documentElement.getAttribute('data-theme'));
+    toggle.addEventListener('click', () => {
+      const current = document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+      const next = current === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem('sciecraft-theme', next);
+      render(next);
+    });
+  })();
+
+  function showToast(message) {
+    const toast = document.getElementById('toast');
+    toast.textContent = message;
+    toast.classList.add('show');
+    clearTimeout(window._toastTimer);
+    window._toastTimer = setTimeout(() => toast.classList.remove('show'), 1800);
+  }
+
+  // ---------- Password gate (deterrent only — see note below) ----------
+  // The password itself is never stored here, only its SHA-256 hash.
+  // To set your own password: open any browser console and run
+  //   crypto.subtle.digest('SHA-256', new TextEncoder().encode('yourpassword'))
+  //     .then(b => console.log(Array.from(new Uint8Array(b)).map(x => x.toString(16).padStart(2,'0')).join('')))
+  // then paste the printed hash below. This keeps the real password off the page,
+  // but a hash in client-side code is still just a speed bump, not real security —
+  // anyone with dev tools can bypass the check entirely. Don't rely on this alone
+  // for anything sensitive.
+  const ADMIN_PASSWORD_HASH = '057ba03d6c44104863dc7361fe4578965d1887360f90a0895882e58a6248fc86'; // default: "changeme"
+
+  async function sha256Hex(text) {
+    const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text));
+    return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+  }
+
+  function showAdminArea() {
+    document.getElementById('lock-screen').style.display = 'none';
+    document.getElementById('admin-area').style.display = 'block';
+  }
+  function showLockScreen() {
+    document.getElementById('admin-area').style.display = 'none';
+    document.getElementById('lock-screen').style.display = 'block';
+    document.getElementById('admin-password').value = '';
+  }
+
+  if (sessionStorage.getItem('sciecraft-admin-unlocked') === 'true') {
+    showAdminArea();
+  }
+
+  document.getElementById('unlock-btn').addEventListener('click', async () => {
+    const input = document.getElementById('admin-password').value;
+    const errorEl = document.getElementById('lock-error');
+    const hash = await sha256Hex(input);
+    if (hash === ADMIN_PASSWORD_HASH) {
+      sessionStorage.setItem('sciecraft-admin-unlocked', 'true');
+      errorEl.textContent = '';
+      showAdminArea();
+    } else {
+      errorEl.textContent = 'Incorrect password.';
+    }
+  });
+
+  document.getElementById('admin-password').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') document.getElementById('unlock-btn').click();
+  });
+
+  document.getElementById('lock-btn').addEventListener('click', () => {
+    sessionStorage.removeItem('sciecraft-admin-unlocked');
+    showLockScreen();
+  });
+
+  // ---------- Countdown logic ----------
+  let tickHandle = null;
+
+  function startCountdown(name, isoDate) {
+    const target = new Date(isoDate).getTime();
+    if (isNaN(target)) return;
+
+    document.getElementById('countdown-panel').style.display = 'block';
+    document.getElementById('display-name').textContent = name || 'Untitled event';
+    document.getElementById('display-date').textContent = new Date(isoDate).toLocaleString(undefined, {
+      weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit'
+    });
+
+    if (tickHandle) clearInterval(tickHandle);
+
+    function tick() {
+      const now = Date.now();
+      const diff = target - now;
+      const statusEl = document.getElementById('countdown-status');
+
+      if (diff <= 0) {
+        document.getElementById('days').textContent = '00';
+        document.getElementById('hours').textContent = '00';
+        document.getElementById('minutes').textContent = '00';
+        document.getElementById('seconds').textContent = '00';
+        statusEl.textContent = "It's happening now!";
+        clearInterval(tickHandle);
+        return;
+      }
+
+      const days = Math.floor(diff / 86400000);
+      const hours = Math.floor((diff % 86400000) / 3600000);
+      const minutes = Math.floor((diff % 3600000) / 60000);
+      const seconds = Math.floor((diff % 60000) / 1000);
+
+      document.getElementById('days').textContent = String(days).padStart(2, '0');
+      document.getElementById('hours').textContent = String(hours).padStart(2, '0');
+      document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
+      document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
+      statusEl.textContent = '';
+    }
+
+    tick();
+    tickHandle = setInterval(tick, 1000);
+  }
+
+  function buildShareUrl(name, isoDate) {
+    const url = new URL(window.location.href);
+    url.search = '';
+    url.searchParams.set('event', name);
+    url.searchParams.set('date', isoDate);
+    return url.toString();
+  }
+
+  function saveCountdown(name, isoDate, url) {
+    let saved = [];
+    try { saved = JSON.parse(localStorage.getItem('sciecraft-countdowns') || '[]'); } catch (e) { saved = []; }
+    saved = saved.filter(c => !(c.name === name && c.date === isoDate));
+    saved.unshift({ name, date: isoDate, url });
+    saved = saved.slice(0, 12);
+    localStorage.setItem('sciecraft-countdowns', JSON.stringify(saved));
+    renderSavedList();
+  }
+
+  function removeCountdown(index) {
+    let saved = [];
+    try { saved = JSON.parse(localStorage.getItem('sciecraft-countdowns') || '[]'); } catch (e) { saved = []; }
+    saved.splice(index, 1);
+    localStorage.setItem('sciecraft-countdowns', JSON.stringify(saved));
+    renderSavedList();
+  }
+
+  function renderSavedList() {
+    let saved = [];
+    try { saved = JSON.parse(localStorage.getItem('sciecraft-countdowns') || '[]'); } catch (e) { saved = []; }
+    const list = document.getElementById('saved-list');
+    const emptyNote = document.getElementById('empty-note');
+
+    if (saved.length === 0) {
+      list.innerHTML = '';
+      list.appendChild(emptyNote);
+      return;
+    }
+
+    list.innerHTML = '';
+    saved.forEach((item, index) => {
+      const chip = document.createElement('div');
+      chip.className = 'saved-chip';
+      const link = document.createElement('a');
+      link.href = item.url;
+      link.textContent = item.name || 'Untitled event';
+      const remove = document.createElement('button');
+      remove.textContent = '✕';
+      remove.setAttribute('aria-label', 'Remove saved countdown');
+      remove.addEventListener('click', () => removeCountdown(index));
+      chip.appendChild(link);
+      chip.appendChild(remove);
+      list.appendChild(chip);
+    });
+  }
+
+  document.getElementById('generate-btn').addEventListener('click', () => {
+    const name = document.getElementById('event-name').value.trim();
+    const dateVal = document.getElementById('event-date').value;
+
+    if (!dateVal) {
+      showToast('Pick a date and time first');
+      return;
+    }
+
+    const isoDate = new Date(dateVal).toISOString();
+    const url = buildShareUrl(name, isoDate);
+
+    document.getElementById('share-section').style.display = 'block';
+    document.getElementById('share-link').value = url;
+
+    startCountdown(name, isoDate);
+    saveCountdown(name, isoDate, url);
+
+    history.replaceState(null, '', url);
+  });
+
+  document.getElementById('copy-link-btn').addEventListener('click', () => {
+    const input = document.getElementById('share-link');
+    input.select();
+    navigator.clipboard.writeText(input.value).then(() => {
+      showToast('Link copied — paste it on Discord');
+    }).catch(() => {
+      showToast("Couldn't copy — select and copy manually");
+    });
+  });
+
+  // ---------- Load from URL on page open ----------
+  (function initFromUrl() {
+    const params = new URLSearchParams(window.location.search);
+    const eventName = params.get('event');
+    const eventDate = params.get('date');
+
+    if (eventDate) {
+      const d = new Date(eventDate);
+      if (!isNaN(d.getTime())) {
+        document.getElementById('event-name').value = eventName || '';
+        // datetime-local expects local time without timezone
+        const local = new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
+        document.getElementById('event-date').value = local;
+
+        const url = buildShareUrl(eventName || '', d.toISOString());
+        document.getElementById('share-section').style.display = 'block';
+        document.getElementById('share-link').value = url;
+
+        startCountdown(eventName, d.toISOString());
+      }
+    }
+
+    renderSavedList();
+  })();
+</script>
+
+</body>
+</html>

@@ -349,6 +349,14 @@
   .status-dot.online{ background: #4caf82; }
   .status-dot.offline{ background: #e0637c; }
 
+  .shared-status{
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 16px;
+  }
+  .shared-status .status-dot{ width:9px; height:9px; }
+
   .port-note{
     text-align:center;
     color: var(--ink-dim);
@@ -495,6 +503,7 @@
     <div>
       <a href="#connect" class="nav-link">Connect</a>
       <a href="#rules" class="nav-link">Info</a>
+      <a href="countdown.html" class="nav-link">Events</a>
       <button class="theme-toggle" id="theme-toggle" aria-label="Switch between dark and light mode">
         <span class="icon" id="theme-icon">☀️</span><span id="theme-label">Light</span>
       </button>
@@ -504,10 +513,10 @@
   <header class="hero">
     <div class="eyebrow"><span class="dot" id="global-status-dot"></span> <span id="global-status-text">Checking server status…</span></div>
     <h1 class="title pixel">Scie<span>Craft</span></h1>
-    <p class="tagline">Built by Tugsay students for the Tugsay community. Join our crossplay survival server where Java and Bedrock players build, trade, and explore one shared world together.</p>
+    <p class="tagline">A crossplay survival server. Java and Bedrock players build, trade, and explore the same world, side by side.</p>
 
     <div class="cta-row">
-      <a class="btn btn-discord" href="https://discord.gg/ehcBQG2d7" target="_blank" rel="noopener">
+      <a class="btn btn-discord" href="https://discord.gg/YOUR-INVITE-CODE" target="_blank" rel="noopener">
         Join the Discord
       </a>
       <a class="btn btn-ghost" href="#connect">Get the server address</a>
@@ -525,12 +534,16 @@
       <h2>Connect to the server</h2>
     </div>
 
+    <div class="status-line shared-status">
+      <span class="status-dot" id="shared-status-dot"></span>
+      <span id="shared-status-text">Checking status…</span>
+    </div>
+
     <div class="connect-panel">
       <div class="connect-row">
         <div class="connect-label"><span class="chip-dot java"></span> Java Edition</div>
-        <div class="status-line"><span class="status-dot" id="java-status-dot"></span><span id="java-status-text">Checking status…</span></div>
         <div class="connect-address">
-          <code id="java-ip">ScieCraft.agila.host:25883</code>
+          <code id="java-ip">play.sciecraft.net</code>
           <button class="copy-btn" onclick="copyAddress('java-ip', this)">Copy</button>
         </div>
         <p class="connect-note">Add as a server in your Multiplayer menu.</p>
@@ -538,19 +551,18 @@
 
       <div class="connect-row">
         <div class="connect-label"><span class="chip-dot bedrock"></span> Bedrock Edition</div>
-        <div class="status-line"><span class="status-dot" id="bedrock-status-dot"></span><span id="bedrock-status-text">Checking status…</span></div>
         <div class="connect-address">
-          <code id="bedrock-ip">ScieCraft.agila.host</code>
+          <code id="bedrock-ip">play.sciecraft.net</code>
           <button class="copy-btn" onclick="copyAddress('bedrock-ip', this)">Copy</button>
         </div>
         <div class="connect-address">
-          <code id="bedrock-port">25883</code>
+          <code id="bedrock-port">19132</code>
           <button class="copy-btn" onclick="copyAddress('bedrock-port', this)">Copy</button>
         </div>
         <p class="connect-note">Add as a Server in the Bedrock Friends tab, using the address and port above.</p>
       </div>
     </div>
-    <p class="port-note">Having trouble connecting? Ask in the <a href="https://discord.gg/YOUR-INVITE-CODE" style="color:var(--grass)" target="_blank" rel="noopener">#general channel</a> on our Discord.</p>
+    <p class="port-note">Having trouble connecting? Ask in the <a href="https://discord.gg/YOUR-INVITE-CODE" style="color:var(--grass)" target="_blank" rel="noopener">#support channel</a> on Discord.</p>
   </section>
 
   <section class="section" id="features">
@@ -561,23 +573,13 @@
     <div class="features">
       <div class="feature-card">
         <div class="icon">⛏️</div>
-        <h3>Survival, unmodified</h3>
-        <p>Vanilla-style survival with a shared economy and land claims. No pay-to-win.</p>
+        <h3>Close to vanilla</h3>
+        <p>Survival as Minecraft intends it. A couple of small plugins keep things running, nothing that changes how the game plays.</p>
       </div>
       <div class="feature-card">
         <div class="icon">🔀</div>
         <h3>True crossplay</h3>
-        <p>Java and Bedrock players share one world, one economy, one community.</p>
-      </div>
-      <div class="feature-card">
-        <div class="icon">🏘️</div>
-        <h3>Player towns</h3>
-        <p>Claim land, build a town, and set permissions for who can build where.</p>
-      </div>
-      <div class="feature-card">
-        <div class="icon">🎉</div>
-        <h3>Community events</h3>
-        <p>Regular builds, mob arenas, and seasonal events, announced on Discord.</p>
+        <p>Java and Bedrock players share one world and one community.</p>
       </div>
       <div class="feature-card">
         <div class="icon">🛡️</div>
@@ -609,9 +611,9 @@
       <div class="info-card">
         <h3>House rules</h3>
         <ul>
-          <li>No griefing or cheating</li>
+          <li>No griefing, stealing, or cheating</li>
           <li>Keep chat respectful, no harassment</li>
-          <li>Build where you've claimed land</li>
+          <li>Ask before building near someone else's base</li>
           <li>Ask staff before large terrain edits near spawn</li>
         </ul>
       </div>
@@ -659,25 +661,12 @@ function showToast(message) {
 }
 
 // --- Live server status, via api.mcstatus.io (free, no key needed) ---
-async function fetchStatus(edition, address) {
+function fetchStatus(edition, address) {
   const url = `https://api.mcstatus.io/v2/status/${edition}/${encodeURIComponent(address)}`;
-  const res = await fetch(url);
-  if (!res.ok) throw new Error('bad response');
-  return res.json();
-}
-
-function applyStatus(dotEl, textEl, data) {
-  if (data && data.online) {
-    dotEl.classList.remove('offline');
-    dotEl.classList.add('online');
-    textEl.textContent = data.players
-      ? `Online — ${data.players.online}/${data.players.max} players`
-      : 'Online';
-  } else {
-    dotEl.classList.remove('online');
-    dotEl.classList.add('offline');
-    textEl.textContent = 'Offline';
-  }
+  return fetch(url).then(res => {
+    if (!res.ok) throw new Error('bad response');
+    return res.json();
+  });
 }
 
 async function refreshStatus() {
@@ -685,42 +674,46 @@ async function refreshStatus() {
   const bedrockHost = document.getElementById('bedrock-ip').innerText.trim();
   const bedrockPort = document.getElementById('bedrock-port').innerText.trim();
 
-  const javaDot = document.getElementById('java-status-dot');
-  const javaText = document.getElementById('java-status-text');
-  const bedrockDot = document.getElementById('bedrock-status-dot');
-  const bedrockText = document.getElementById('bedrock-status-text');
+  const sharedDot = document.getElementById('shared-status-dot');
+  const sharedText = document.getElementById('shared-status-text');
   const globalDot = document.getElementById('global-status-dot');
   const globalText = document.getElementById('global-status-text');
 
   let javaData = null;
   let bedrockData = null;
 
-  try {
-    javaData = await fetchStatus('java', javaHost);
-    applyStatus(javaDot, javaText, javaData);
-  } catch (e) {
-    javaText.textContent = 'Status unavailable';
-  }
-
-  try {
-    bedrockData = await fetchStatus('bedrock', `${bedrockHost}:${bedrockPort}`);
-    applyStatus(bedrockDot, bedrockText, bedrockData);
-  } catch (e) {
-    bedrockText.textContent = 'Status unavailable';
-  }
+  try { javaData = await fetchStatus('java', javaHost); } catch (e) { /* offline or unreachable */ }
+  try { bedrockData = await fetchStatus('bedrock', `${bedrockHost}:${bedrockPort}`); } catch (e) { /* offline or unreachable */ }
 
   const anyOnline = (javaData && javaData.online) || (bedrockData && bedrockData.online);
   const anyChecked = javaData || bedrockData;
 
+  // Both editions point at the same server, so player counts should match.
+  // Prefer whichever response came back online with player data, Java first.
+  const playerSource = (javaData && javaData.online && javaData.players) ? javaData.players
+                      : (bedrockData && bedrockData.online && bedrockData.players) ? bedrockData.players
+                      : null;
+
   if (anyOnline) {
+    sharedDot.classList.remove('offline');
+    sharedDot.classList.add('online');
+    sharedText.textContent = playerSource
+      ? `Online — ${playerSource.online}/${playerSource.max} players`
+      : 'Online';
+
     globalDot.classList.remove('offline');
     globalDot.classList.add('online');
     globalText.textContent = 'Server online';
   } else if (anyChecked) {
+    sharedDot.classList.remove('online');
+    sharedDot.classList.add('offline');
+    sharedText.textContent = 'Offline';
+
     globalDot.classList.remove('online');
     globalDot.classList.add('offline');
     globalText.textContent = 'Server offline';
   } else {
+    sharedText.textContent = 'Status unavailable';
     globalText.textContent = 'Status unavailable';
   }
 }
