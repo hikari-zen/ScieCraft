@@ -349,14 +349,6 @@
   .status-dot.online{ background: #4caf82; }
   .status-dot.offline{ background: #e0637c; }
 
-  .shared-status{
-    font-size: 0.95rem;
-    font-weight: 600;
-    color: var(--ink);
-    margin-bottom: 16px;
-  }
-  .shared-status .status-dot{ width:9px; height:9px; }
-
   .port-note{
     text-align:center;
     color: var(--ink-dim);
@@ -534,11 +526,6 @@
       <h2>Connect to the server</h2>
     </div>
 
-    <div class="status-line shared-status">
-      <span class="status-dot" id="shared-status-dot"></span>
-      <span id="shared-status-text">Checking status…</span>
-    </div>
-
     <div class="connect-panel">
       <div class="connect-row">
         <div class="connect-label"><span class="chip-dot java"></span> Java Edition</div>
@@ -674,8 +661,6 @@ async function refreshStatus() {
   const bedrockHost = document.getElementById('bedrock-ip').innerText.trim();
   const bedrockPort = document.getElementById('bedrock-port').innerText.trim();
 
-  const sharedDot = document.getElementById('shared-status-dot');
-  const sharedText = document.getElementById('shared-status-text');
   const globalDot = document.getElementById('global-status-dot');
   const globalText = document.getElementById('global-status-text');
 
@@ -695,25 +680,16 @@ async function refreshStatus() {
                       : null;
 
   if (anyOnline) {
-    sharedDot.classList.remove('offline');
-    sharedDot.classList.add('online');
-    sharedText.textContent = playerSource
-      ? `Online — ${playerSource.online}/${playerSource.max} players`
-      : 'Online';
-
     globalDot.classList.remove('offline');
     globalDot.classList.add('online');
-    globalText.textContent = 'Server online';
+    globalText.textContent = playerSource
+      ? `Online — ${playerSource.online}/${playerSource.max} players`
+      : 'Server online';
   } else if (anyChecked) {
-    sharedDot.classList.remove('online');
-    sharedDot.classList.add('offline');
-    sharedText.textContent = 'Offline';
-
     globalDot.classList.remove('online');
     globalDot.classList.add('offline');
     globalText.textContent = 'Server offline';
   } else {
-    sharedText.textContent = 'Status unavailable';
     globalText.textContent = 'Status unavailable';
   }
 }
