@@ -422,6 +422,12 @@
     .lock-panel{ padding: 32px 22px; }
   }
 </style>
+
+<meta property="og:title" content="ScieCraft Event Countdown">
+<meta property="og:description" content="Open this link to view the live countdown for the event.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://placehold.co/1200x630/png?text=ScieCraft+Event+Countdown">
+<meta name="twitter:card" content="summary_large_image">
 </head>
 <body>
 
@@ -444,11 +450,7 @@
     <h1 class="title pixel">Event Countdown</h1>
     <p class="tagline">Set a date, get a countdown, and share the link on Discord so everyone can see exactly when an event starts.</p>
   </header>
-  <div style="text-align:right;margin-bottom:18px;">
-    <button class="btn btn-ghost" id="show-admin-btn" style="display:none;">🔒 Staff Access</button>
-  </div>
-
-
+  
   <div class="panel" id="countdown-panel">
     <p class="event-name" id="display-name"></p>
     <p class="event-date" id="display-date"></p>
@@ -460,6 +462,9 @@
     </div>
     <p class="countdown-status" id="countdown-status"></p>
   </div>
+  <div style="text-align:center;margin-top:20px;">
+      <button class="btn btn-ghost" id="show-admin-btn" style="display:none;">🔒 Staff Access</button>
+    </div>
 
   <div class="panel lock-panel" id="lock-screen" style="display:none;">
     <div class="lock-icon">🔒</div>
