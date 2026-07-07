@@ -43,6 +43,8 @@
 
   * { box-sizing: border-box; }
 
+  html{ overflow-x: hidden; }
+
   body{
     margin:0;
     background: var(--bg);
@@ -80,7 +82,9 @@
     display:flex;
     align-items:center;
     justify-content: space-between;
-    padding: 22px 0;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding: 18px 0;
   }
   .brand{
     display:flex;
@@ -97,11 +101,17 @@
     border-radius: 3px;
     flex-shrink:0;
   }
+  .nav-links{
+    display:flex;
+    align-items:center;
+    flex-wrap: wrap;
+    gap: 6px 18px;
+  }
   nav a.nav-link{
     color: var(--ink-dim);
     text-decoration:none;
     font-size: 0.9rem;
-    margin-left: 20px;
+    padding: 6px 2px;
   }
   nav a.nav-link:hover{ color: var(--ink); }
 
@@ -109,7 +119,6 @@
     display:inline-flex;
     align-items:center;
     gap: 7px;
-    margin-left: 20px;
     background: var(--bg-panel);
     border: 1px solid var(--line);
     color: var(--ink);
@@ -401,6 +410,17 @@
   @media (max-width: 480px){
     .countdown-grid{ grid-template-columns: repeat(2, 1fr); }
   }
+
+  @media (max-width: 480px){
+    .wrap{ padding: 0 16px 40px; }
+    .panel{ padding: 22px; }
+    .share-row{ flex-direction: column; align-items:stretch; }
+    .share-row .btn{ justify-content:center; }
+    #generate-btn{ width: 100%; justify-content:center; }
+    .admin-header{ flex-wrap: wrap; gap: 8px; }
+    .toast{ width: calc(100% - 32px); text-align:center; }
+    .lock-panel{ padding: 32px 22px; }
+  }
 </style>
 </head>
 <body>
@@ -412,7 +432,7 @@
       <span class="brand-block" aria-hidden="true"></span>
       ScieCraft
     </a>
-    <div>
+    <div class="nav-links">
       <a href="index.html" class="nav-link">Back to site</a>
       <button class="theme-toggle" id="theme-toggle" aria-label="Switch between dark and light mode">
         <span class="icon" id="theme-icon">☀️</span><span id="theme-label">Light</span>
