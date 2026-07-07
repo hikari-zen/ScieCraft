@@ -289,14 +289,76 @@
 
   .lock-panel{
     text-align:center;
+    max-width: 380px;
+    margin: 20px auto 24px;
+    padding: 40px 32px;
+    border-top: 3px solid var(--grass);
   }
-  .lock-panel .lock-icon{ font-size: 1.6rem; margin-bottom: 10px; }
-  .lock-panel p{ color: var(--ink-dim); font-size: 0.9rem; margin: 0 0 18px; }
-  .lock-panel .field{ max-width: 280px; margin: 0 auto 14px; text-align:left; }
+  .lock-panel .lock-icon{
+    width: 56px; height: 56px;
+    border-radius: 50%;
+    background: color-mix(in srgb, var(--grass) 14%, transparent);
+    display:flex; align-items:center; justify-content:center;
+    font-size: 1.5rem;
+    margin: 0 auto 18px;
+  }
+  .lock-panel h2{
+    font-family: 'Press Start 2P', monospace;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+    margin: 0 0 12px;
+  }
+  .lock-panel p{ color: var(--ink-dim); font-size: 0.88rem; margin: 0 0 22px; line-height: 1.6; }
+  .lock-panel .field{ max-width: 100%; margin: 0 0 16px; text-align:left; }
+  .lock-panel .btn{ width: 100%; justify-content:center; }
+
+  .password-field{ position: relative; }
+  .password-field input{
+    width: 100%;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 13px 64px 13px 42px;
+    color: var(--ink);
+    font-family: inherit;
+    font-size: 1rem;
+    letter-spacing: 3px;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  }
+  .password-field input:focus-visible{
+    outline: none;
+    border-color: var(--grass);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--grass) 20%, transparent);
+  }
+  .password-field .password-icon{
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 0.9rem;
+    opacity: 0.55;
+    pointer-events: none;
+  }
+  .password-field .password-toggle{
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--ink-dim);
+    font-size: 0.8rem;
+    font-weight: 600;
+    font-family: inherit;
+    padding: 6px 8px;
+    border-radius: 6px;
+  }
+  .password-field .password-toggle:hover{ color: var(--grass); }
   .lock-error{
     color: #e0637c;
     font-size: 0.85rem;
-    margin: 10px 0 0;
+    margin: 14px 0 0;
     min-height: 1.2em;
   }
   .admin-header{
@@ -381,7 +443,11 @@
     <p>Enter the password to create or manage countdowns. Anyone can still view a countdown from a shared link without it.</p>
     <div class="field">
       <label for="admin-password" class="sr-only">Password</label>
-      <input type="password" id="admin-password" placeholder="Password">
+      <div class="password-field">
+        <span class="password-icon" aria-hidden="true">🔒</span>
+        <input type="password" id="admin-password" placeholder="Enter password">
+        <button type="button" class="password-toggle" id="toggle-password">Show</button>
+      </div>
     </div>
     <button class="btn" id="unlock-btn">Unlock</button>
     <p class="lock-error" id="lock-error"></p>
@@ -497,6 +563,19 @@
 
   document.getElementById('admin-password').addEventListener('keydown', (e) => {
     if (e.key === 'Enter') document.getElementById('unlock-btn').click();
+  });
+
+  document.getElementById('toggle-password').addEventListener('click', () => {
+    const input = document.getElementById('admin-password');
+    const btn = document.getElementById('toggle-password');
+    if (input.type === 'password') {
+      input.type = 'text';
+      btn.textContent = 'Hide';
+    } else {
+      input.type = 'password';
+      btn.textContent = 'Show';
+    }
+    input.focus();
   });
 
   document.getElementById('lock-btn').addEventListener('click', () => {
