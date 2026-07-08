@@ -116,6 +116,18 @@
     box-shadow: var(--brand-bevel);
     border-radius: 3px;
     flex-shrink:0;
+    position: relative;
+    overflow: hidden;
+    display: inline-block;
+  }
+  .brand-logo{
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    border-radius: 3px;
   }
   nav a.nav-link{
     color: var(--ink-dim);
@@ -491,7 +503,9 @@
 
   <nav>
     <a href="#" class="brand">
-      <span class="brand-block" aria-hidden="true"></span>
+      <span class="brand-block" aria-hidden="true">
+        <img class="brand-logo" src="logo.png" alt="" onerror="this.style.display='none'">
+      </span>
       ScieCraft
     </a>
     <div>
