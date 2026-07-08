@@ -422,15 +422,6 @@
     .lock-panel{ padding: 32px 22px; }
   }
 </style>
-
-
-<meta property="og:type" content="website">
-<meta property="og:site_name" content="ScieCraft">
-<meta property="og:title" content="ScieCraft Event Countdown">
-<meta property="og:description" content="Click to view the live countdown for the next ScieCraft event.">
-<meta property="og:url" content="https://your-domain.com/countdown.html">
-<meta name="twitter:card" content="summary">
-
 </head>
 <body>
 
@@ -453,7 +444,7 @@
     <h1 class="title pixel">Event Countdown</h1>
     <p class="tagline">Set a date, get a countdown, and share the link on Discord so everyone can see exactly when an event starts.</p>
   </header>
-  
+
   <div class="panel" id="countdown-panel">
     <p class="event-name" id="display-name"></p>
     <p class="event-date" id="display-date"></p>
@@ -465,11 +456,8 @@
     </div>
     <p class="countdown-status" id="countdown-status"></p>
   </div>
-  <div style="text-align:center;margin-top:20px;">
-      <button class="btn btn-ghost" id="show-admin-btn" style="display:none;">🔒 Staff Access</button>
-    </div>
 
-  <div class="panel lock-panel" id="lock-screen" style="display:none;">
+  <div class="panel lock-panel" id="lock-screen">
     <div class="lock-icon">🔒</div>
     <h2>Staff access</h2>
     <p>Enter the password to create or manage countdowns. Anyone can still view a countdown from a shared link without it.</p>
@@ -551,17 +539,26 @@
   }
 
   // ---------- Password gate (deterrent only — see note below) ----------
-  // The password itself is never stored here, only its SHA-256 hash.
-  // To set your own password: open any browser console and run
-  //   crypto.subtle.digest('SHA-256', new TextEncoder().encode('yourpassword'))
-  //     .then(b => console.log(Array.from(new Uint8Array(b)).map(x => x.toString(16).padStart(2,'0')).join('')))
-  // then paste the printed hash below. This keeps the real password off the page,
-  // but a hash in client-side code is still just a speed bump, not real security —
-  // anyone with dev tools can bypass the check entirely. Don't rely on this alone
-  // for anything sensitive.
-  const ADMIN_PASSWORD = "zenposocute";
+  // The password is stored here in plain text. This is just a speed bump,
+  // not real security — anyone with dev tools can read it or bypass the
+  // check entirely. Don't rely on this alone for anything sensitive.
+  const ADMIN_PASSWORD = 'changeme'; // change this to whatever you like
 
-document.getElementById('unlock-btn').addEventListener('click', () => {
+  function showAdminArea() {
+    document.getElementById('lock-screen').style.display = 'none';
+    document.getElementById('admin-area').style.display = 'block';
+  }
+  function showLockScreen() {
+    document.getElementById('admin-area').style.display = 'none';
+    document.getElementById('lock-screen').style.display = 'block';
+    document.getElementById('admin-password').value = '';
+  }
+
+  if (sessionStorage.getItem('sciecraft-admin-unlocked') === 'true') {
+    showAdminArea();
+  }
+
+  document.getElementById('unlock-btn').addEventListener('click', () => {
     const input = document.getElementById('admin-password').value;
     const errorEl = document.getElementById('lock-error');
     if (input === ADMIN_PASSWORD) {
@@ -571,7 +568,7 @@ document.getElementById('unlock-btn').addEventListener('click', () => {
     } else {
       errorEl.textContent = 'Incorrect password.';
     }
-});
+  });
 
   document.getElementById('admin-password').addEventListener('keydown', (e) => {
     if (e.key === 'Enter') document.getElementById('unlock-btn').click();
@@ -592,11 +589,6 @@ document.getElementById('unlock-btn').addEventListener('click', () => {
 
   document.getElementById('lock-btn').addEventListener('click', () => {
     sessionStorage.removeItem('sciecraft-admin-unlocked');
-    showLockScreen();
-  });
-
-  document.getElementById('show-admin-btn').addEventListener('click', () => {
-    document.getElementById('show-admin-btn').style.display = 'none';
     showLockScreen();
   });
 
@@ -739,8 +731,6 @@ document.getElementById('unlock-btn').addEventListener('click', () => {
     const eventDate = params.get('date');
 
     if (eventDate) {
-      document.getElementById('show-admin-btn').style.display='inline-flex';
-      document.getElementById('lock-screen').style.display='none';
       const d = new Date(eventDate);
       if (!isNaN(d.getTime())) {
         document.getElementById('event-name').value = eventName || '';
@@ -754,9 +744,6 @@ document.getElementById('unlock-btn').addEventListener('click', () => {
 
         startCountdown(eventName, d.toISOString());
       }
-    } else {
-      if (sessionStorage.getItem('sciecraft-admin-unlocked') === 'true') showAdminArea();
-      else showLockScreen();
     }
 
     renderSavedList();
