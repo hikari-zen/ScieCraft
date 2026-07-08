@@ -559,38 +559,19 @@
   // but a hash in client-side code is still just a speed bump, not real security —
   // anyone with dev tools can bypass the check entirely. Don't rely on this alone
   // for anything sensitive.
-  const ADMIN_PASSWORD_HASH = '5ea632ef78c3e6d64653087d3f810972f97691ae93e064b08e6dbca4a671cb8d'; // default: "changeme"
+  const ADMIN_PASSWORD = "changeme";
 
-  async function sha256Hex(text) {
-    const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text));
-    return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
-  }
-
-  function showAdminArea() {
-    document.getElementById('lock-screen').style.display = 'none';
-    document.getElementById('admin-area').style.display = 'block';
-  }
-  function showLockScreen() {
-    document.getElementById('admin-area').style.display = 'none';
-    document.getElementById('lock-screen').style.display = 'block';
-    document.getElementById('show-admin-btn').style.display = 'none';
-    document.getElementById('admin-password').value = '';
-  }
-
-  
-
-  document.getElementById('unlock-btn').addEventListener('click', async () => {
+document.getElementById('unlock-btn').addEventListener('click', () => {
     const input = document.getElementById('admin-password').value;
     const errorEl = document.getElementById('lock-error');
-    const hash = await sha256Hex(input);
-    if (hash === ADMIN_PASSWORD_HASH) {
+    if (input === ADMIN_PASSWORD) {
       sessionStorage.setItem('sciecraft-admin-unlocked', 'true');
       errorEl.textContent = '';
       showAdminArea();
     } else {
       errorEl.textContent = 'Incorrect password.';
     }
-  });
+});
 
   document.getElementById('admin-password').addEventListener('keydown', (e) => {
     if (e.key === 'Enter') document.getElementById('unlock-btn').click();
