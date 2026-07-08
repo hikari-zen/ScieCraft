@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Event Countdown — ScieCraft</title>
-<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" href="favicon.ico?v=2" type="image/x-icon">
 <meta name="description" content="Create and share a countdown timer for ScieCraft server events.">
 <script>
   (function () {
@@ -775,8 +775,38 @@
         startCountdown(eventName, d.toISOString());
       }
     } else {
-      if (sessionStorage.getItem('sciecraft-admin-unlocked') === 'true') showAdminArea();
-      else showLockScreen();
+      // No countdown specified in the URL — fall back to the most recently
+      // created countdown on this device, so the Events tab always shows
+      // the current event instead of an empty admin screen.
+      let saved = [];
+      try { saved = JSON.parse(localStorage.getItem('sciecraft-countdowns') || '[]'); } catch (e) { saved = []; }
+
+      if (saved.length > 0) {
+        const current = saved[0];
+        const d = new Date(current.date);
+        if (!isNaN(d.getTime())) {
+          document.getElementById('show-admin-btn').style.display='inline-flex';
+          document.getElementById('lock-screen').style.display='none';
+          document.getElementById('event-name').value = current.name || '';
+          const local = new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
+          document.getElementById('event-date').value = local;
+
+          const url = current.url || buildShareUrl(current.name || '', d.toISOString());
+          document.getElementById('share-section').style.display = 'block';
+          document.getElementById('share-link').value = url;
+
+          startCountdown(current.name, d.toISOString());
+          history.replaceState(null, '', url);
+        } else if (sessionStorage.getItem('sciecraft-admin-unlocked') === 'true') {
+          showAdminArea();
+        } else {
+          showLockScreen();
+        }
+      } else if (sessionStorage.getItem('sciecraft-admin-unlocked') === 'true') {
+        showAdminArea();
+      } else {
+        showLockScreen();
+      }
     }
 
     renderSavedList();
