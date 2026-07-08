@@ -55,7 +55,7 @@
   html, body{ transition: background-color 0.2s ease; }
 
   * { box-sizing: border-box; }
-  html { scroll-behavior: smooth; }
+  html { scroll-behavior: smooth; overflow-x: hidden; }
 
   body{
     margin:0;
@@ -339,6 +339,7 @@
     color: var(--ink);
     overflow-x:auto;
     white-space: nowrap;
+    min-width: 0;
   }
   .copy-btn{
     flex-shrink:0;
