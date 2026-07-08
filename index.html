@@ -436,60 +436,6 @@
   .info-card li{ margin-bottom: 8px; }
   .info-card li:last-child{ margin-bottom:0; }
 
-  /* ---------- PLUGINS ---------- */
-  .section-sub{
-    margin: -8px 0 20px;
-    color: var(--ink-dim);
-    font-size: 0.92rem;
-    max-width: 560px;
-  }
-  .plugin-grid{
-    display:grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 14px;
-  }
-  @media (max-width: 760px){ .plugin-grid{ grid-template-columns: 1fr 1fr; } }
-  @media (max-width: 480px){ .plugin-grid{ grid-template-columns: 1fr; } }
-  .plugin-card{
-    background: var(--bg-panel);
-    border: 1px solid var(--line);
-    border-radius: 12px;
-    padding: 18px 20px;
-    transition: transform 0.15s ease, border-color 0.15s ease;
-  }
-  .plugin-card:hover{
-    transform: translateY(-2px);
-    border-color: var(--grass);
-  }
-  .plugin-card-head{
-    display:flex;
-    align-items:center;
-    justify-content: space-between;
-    gap: 8px;
-    margin-bottom: 8px;
-  }
-  .plugin-card h3{
-    margin:0;
-    font-size: 0.98rem;
-    color: var(--ink);
-  }
-  .plugin-tag{
-    flex-shrink:0;
-    background: color-mix(in srgb, var(--grass) 16%, transparent);
-    color: var(--grass);
-    font-size: 0.68rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    padding: 3px 8px;
-    border-radius: 999px;
-  }
-  .plugin-card p{
-    margin:0;
-    font-size: 0.86rem;
-    color: var(--ink-dim);
-  }
-
   /* ---------- DISCORD CTA ---------- */
   .discord-cta{
     background: linear-gradient(135deg, var(--bg-panel-raised), var(--bg-panel));
@@ -563,7 +509,7 @@
     </a>
     <div class="nav-links">
       <a href="#connect" class="nav-link">Connect</a>
-      <a href="#plugins" class="nav-link">Plugins</a>
+      <a href="plugins.html" class="nav-link">Plugins</a>
       <a href="#rules" class="nav-link">Info</a>
       <a href="countdown.html" class="nav-link">Events</a>
       <button class="theme-toggle" id="theme-toggle" aria-label="Switch between dark and light mode">
@@ -646,66 +592,14 @@
       <div class="feature-card">
         <div class="icon">💬</div>
         <h3>Friendly community</h3>
-        <p>Build, explore, and make friends in our respectful and supportive community.</p>
-      </div>
-    </div>
-  </section>
-
-  <section class="section" id="plugins">
-    <div class="section-head">
-      <span class="num pixel">03</span>
-      <h2>Installed plugins</h2>
-    </div>
-    <p class="section-sub">We keep things close to vanilla. These run quietly in the background to protect builds, bridge Java and Bedrock, and smooth out survival.</p>
-    <div class="plugin-grid">
-      <div class="plugin-card">
-        <div class="plugin-card-head">
-          <h3>AuthMe</h3>
-          <span class="plugin-tag">Security</span>
-        </div>
-        <p>Requires players to register and log in before they can move or interact.</p>
-      </div>
-      <div class="plugin-card">
-        <div class="plugin-card-head">
-          <h3>Geyser + Floodgate</h3>
-          <span class="plugin-tag">Crossplay</span>
-        </div>
-        <p>Lets Bedrock players join the same Java world with no separate server needed.</p>
-      </div>
-      <div class="plugin-card">
-        <div class="plugin-card-head">
-          <h3>Simple Voice Chat</h3>
-          <span class="plugin-tag">Voice Chat</span>
-        </div>
-        <p>Adds proximity-based in-game voice chat.</p>
-      </div>
-      <div class="plugin-card">
-        <div class="plugin-card-head">
-          <h3>Homes</h3>
-          <span class="plugin-tag">Utility</span>
-        </div>
-        <p>Lets players set and teleport back to their own home locations.</p>
-      </div>
-      <div class="plugin-card">
-        <div class="plugin-card-head">
-          <h3>TPA</h3>
-          <span class="plugin-tag">Utility</span>
-        </div>
-        <p>Lets players send and accept teleport requests to each other.</p>
-      </div>
-      <div class="plugin-card">
-        <div class="plugin-card-head">
-          <h3>String Dupers Return</h3>
-          <span class="plugin-tag">Anti-Exploit</span>
-        </div>
-        <p>Brings back patched string dupers for easier villager trading.</p>
+        <p>New players get help finding their feet from day one.</p>
       </div>
     </div>
   </section>
 
   <section class="section" id="rules">
     <div class="section-head">
-      <span class="num pixel">04</span>
+      <span class="num pixel">03</span>
       <h2>Before you join</h2>
     </div>
     <div class="info-grid">
