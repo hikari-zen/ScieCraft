@@ -98,6 +98,8 @@
     display:flex;
     align-items:center;
     justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
     padding: 22px 0;
   }
   .brand{
@@ -129,11 +131,16 @@
     display: block;
     border-radius: 3px;
   }
+  .nav-links{
+    display:flex;
+    align-items:center;
+    flex-wrap: wrap;
+    gap: 8px 20px;
+  }
   nav a.nav-link{
     color: var(--ink-dim);
     text-decoration:none;
     font-size: 0.9rem;
-    margin-left: 24px;
     transition: color 0.15s ease;
   }
   nav a.nav-link:hover{ color: var(--ink); }
@@ -142,7 +149,6 @@
     display:inline-flex;
     align-items:center;
     gap: 7px;
-    margin-left: 20px;
     background: var(--bg-panel);
     border: 1px solid var(--line);
     color: var(--ink);
@@ -156,6 +162,11 @@
   }
   .theme-toggle:hover{ border-color: var(--grass); color: var(--grass); }
   .theme-toggle .icon{ font-size: 0.9rem; line-height:1; }
+
+  @media (max-width: 480px){
+    nav{ justify-content:center; }
+    .nav-links{ flex: 1 1 100%; justify-content:center; }
+  }
 
   /* ---------- HERO ---------- */
   header.hero{
@@ -504,11 +515,11 @@
   <nav>
     <a href="#" class="brand">
       <span class="brand-block" aria-hidden="true">
-        <img class="brand-logo" src="logo.png" alt="" onerror="this.style.display='none'">
+        <img class="brand-logo" src="logo.png" alt="" style="display:none" onload="this.style.display='block'" onerror="this.style.display='none'">
       </span>
       ScieCraft
     </a>
-    <div>
+    <div class="nav-links">
       <a href="#connect" class="nav-link">Connect</a>
       <a href="#rules" class="nav-link">Info</a>
       <a href="countdown.html" class="nav-link">Events</a>
