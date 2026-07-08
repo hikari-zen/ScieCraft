@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ScieCraft — TugSay SMP</title>
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/png" href="logo.png">
 <meta name="description" content="ScieCraft is a crossplay Minecraft server. Java and Bedrock players welcome. Join us in-game or on Discord.">
 <script>
   (function () {
@@ -447,6 +449,60 @@
   .info-card li{ margin-bottom: 8px; }
   .info-card li:last-child{ margin-bottom:0; }
 
+  /* ---------- PLUGINS ---------- */
+  .section-sub{
+    margin: -8px 0 20px;
+    color: var(--ink-dim);
+    font-size: 0.92rem;
+    max-width: 560px;
+  }
+  .plugin-grid{
+    display:grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+  }
+  @media (max-width: 760px){ .plugin-grid{ grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 480px){ .plugin-grid{ grid-template-columns: 1fr; } }
+  .plugin-card{
+    background: var(--bg-panel);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 18px 20px;
+    transition: transform 0.15s ease, border-color 0.15s ease;
+  }
+  .plugin-card:hover{
+    transform: translateY(-2px);
+    border-color: var(--grass);
+  }
+  .plugin-card-head{
+    display:flex;
+    align-items:center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+  .plugin-card h3{
+    margin:0;
+    font-size: 0.98rem;
+    color: var(--ink);
+  }
+  .plugin-tag{
+    flex-shrink:0;
+    background: color-mix(in srgb, var(--grass) 16%, transparent);
+    color: var(--grass);
+    font-size: 0.68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 3px 8px;
+    border-radius: 999px;
+  }
+  .plugin-card p{
+    margin:0;
+    font-size: 0.86rem;
+    color: var(--ink-dim);
+  }
+
   /* ---------- DISCORD CTA ---------- */
   .discord-cta{
     background: linear-gradient(135deg, var(--bg-panel-raised), var(--bg-panel));
@@ -522,6 +578,7 @@
     </a>
     <div class="nav-links">
       <a href="#connect" class="nav-link">Connect</a>
+      <a href="#plugins" class="nav-link">Plugins</a>
       <a href="#rules" class="nav-link">Info</a>
       <a href="countdown.html" class="nav-link">Events</a>
       <button class="theme-toggle" id="theme-toggle" aria-label="Switch between dark and light mode">
@@ -609,9 +666,61 @@
     </div>
   </section>
 
-  <section class="section" id="rules">
+  <section class="section" id="plugins">
     <div class="section-head">
       <span class="num pixel">03</span>
+      <h2>Installed plugins</h2>
+    </div>
+    <p class="section-sub">We keep things close to vanilla. These run quietly in the background to protect builds, bridge Java and Bedrock, and smooth out survival.</p>
+    <div class="plugin-grid">
+      <div class="plugin-card">
+        <div class="plugin-card-head">
+          <h3>Geyser + Floodgate</h3>
+          <span class="plugin-tag">Crossplay</span>
+        </div>
+        <p>Lets Bedrock players join the same Java world with no separate server needed.</p>
+      </div>
+      <div class="plugin-card">
+        <div class="plugin-card-head">
+          <h3>CoreProtect</h3>
+          <span class="plugin-tag">Protection</span>
+        </div>
+        <p>Logs block changes so grief can be found and rolled back fast.</p>
+      </div>
+      <div class="plugin-card">
+        <div class="plugin-card-head">
+          <h3>WorldGuard</h3>
+          <span class="plugin-tag">Protection</span>
+        </div>
+        <p>Keeps spawn and shared areas safe from griefing and unwanted PvP.</p>
+      </div>
+      <div class="plugin-card">
+        <div class="plugin-card-head">
+          <h3>LuckPerms</h3>
+          <span class="plugin-tag">Permissions</span>
+        </div>
+        <p>Handles staff and player permission groups across the server.</p>
+      </div>
+      <div class="plugin-card">
+        <div class="plugin-card-head">
+          <h3>EssentialsX</h3>
+          <span class="plugin-tag">Utility</span>
+        </div>
+        <p>Adds homes, warps, and other everyday quality-of-life commands.</p>
+      </div>
+      <div class="plugin-card">
+        <div class="plugin-card-head">
+          <h3>Vulcan</h3>
+          <span class="plugin-tag">Anti-Cheat</span>
+        </div>
+        <p>Detects hacked clients so survival stays fair for everyone.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="rules">
+    <div class="section-head">
+      <span class="num pixel">04</span>
       <h2>Before you join</h2>
     </div>
     <div class="info-grid">
@@ -630,7 +739,7 @@
           <li>No griefing or cheating</li>
           <li>Keep chat respectful, no harassment or toxicity</li>
           <li>No hacked clients, Freecam, minimap mods, Replay Mod for locating bases, or seed cracking</li>
-          <li>Use common sense and don't ruin the experience for others</li>
+          <li>Use common sense and don't ruin the experience for others/li>
         </ul>
       </div>
     </div>
