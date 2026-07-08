@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Installed Plugins — ScieCraft</title>
+<link rel="icon" href="favicon.ico?v=2" type="image/x-icon">
+<meta name="description" content="The plugins ScieCraft runs to keep survival close to vanilla, bridge Java and Bedrock, and protect the community.">
+<script>
+  (function () {
+    var saved = localStorage.getItem('sciecraft-theme');
+    var theme = saved === 'light' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', theme);
+  })();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #1c0f18;
+    --bg-panel: #271521;
+    --bg-panel-raised: #331c2b;
+    --grass: #f0568e;
+    --grass-dark: #c93d70;
+    --dirt: #7a5a3a;
+    --gold: #f4a8c9;
+    --ink: #f7e9f0;
+    --ink-dim: #c9a4bb;
+    --stone: #402336;
+    --line: #40233a;
+    --java: #8fb8e8;
+    --bedrock: #f0568e;
+    --title-shadow: 4px 4px 0 rgba(0,0,0,0.35);
+    --brand-bevel: inset -4px -4px 0 rgba(0,0,0,0.25), inset 4px 4px 0 rgba(255,255,255,0.15);
+  }
+
+  html[data-theme="light"]{
+    --bg: #fdf2f8;
+    --bg-panel: #ffffff;
+    --bg-panel-raised: #fdeaf3;
+    --grass: #ec6fa8;
+    --grass-dark: #d9548e;
+    --dirt: #c99a7a;
+    --gold: #b592d6;
+    --ink: #5b3355;
+    --ink-dim: #9b7796;
+    --stone: #fbe1ee;
+    --line: #f6cfe3;
+    --java: #7fa8d9;
+    --bedrock: #ec6fa8;
+    --title-shadow: 3px 3px 0 rgba(236,111,168,0.18);
+    --brand-bevel: inset -4px -4px 0 rgba(0,0,0,0.1), inset 4px 4px 0 rgba(255,255,255,0.35);
+  }
+
+  html, body{ transition: background-color 0.2s ease; }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; overflow-x: hidden; }
+
+  body{
+    margin:0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Inter', system-ui, sans-serif;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body::before{
+    content:"";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.05;
+    background-image:
+      linear-gradient(var(--line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size: 32px 32px;
+  }
+
+  .wrap{
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 0 24px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .pixel{
+    font-family: 'Press Start 2P', monospace;
+    line-height: 1.6;
+  }
+
+  /* ---------- NAV ---------- */
+  nav{
+    display:flex;
+    align-items:center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding: 22px 0;
+  }
+  .brand{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-weight:800;
+    letter-spacing: 0.5px;
+    font-size: 1.05rem;
+    color: var(--ink);
+    text-decoration:none;
+  }
+  .brand-block{
+    width: 20px; height:20px;
+    background: var(--grass);
+    box-shadow: var(--brand-bevel);
+    border-radius: 3px;
+    flex-shrink:0;
+  }
+  .nav-links{
+    display:flex;
+    align-items:center;
+    flex-wrap: wrap;
+    gap: 8px 20px;
+  }
+  nav a.nav-link{
+    color: var(--ink-dim);
+    text-decoration:none;
+    font-size: 0.9rem;
+    transition: color 0.15s ease;
+  }
+  nav a.nav-link:hover{ color: var(--ink); }
+  nav a.nav-link.active{ color: var(--grass); }
+
+  .theme-toggle{
+    display:inline-flex;
+    align-items:center;
+    gap: 7px;
+    background: var(--bg-panel);
+    border: 1px solid var(--line);
+    color: var(--ink);
+    padding: 7px 13px;
+    border-radius: 999px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+    transition: border-color 0.15s ease, color 0.15s ease;
+  }
+  .theme-toggle:hover{ border-color: var(--grass); color: var(--grass); }
+  .theme-toggle .icon{ font-size: 0.9rem; line-height:1; }
+
+  @media (max-width: 480px){
+    nav{ justify-content:center; }
+    .nav-links{ flex: 1 1 100%; justify-content:center; }
+  }
+
+  /* ---------- PAGE HEADER ---------- */
+  header.page-hero{
+    padding: 48px 0 8px;
+    text-align:center;
+  }
+  h1.title{
+    font-size: clamp(1.6rem, 5vw, 2.4rem);
+    margin: 0 0 14px;
+    letter-spacing: 1px;
+    color: var(--ink);
+    text-shadow: var(--title-shadow);
+  }
+  h1.title span{ color: var(--grass); }
+  .tagline{
+    max-width: 560px;
+    margin: 0 auto 8px;
+    color: var(--ink-dim);
+    font-size: 1.02rem;
+  }
+
+  /* ---------- SECTION HEADINGS ---------- */
+  .section{ padding: 40px 0; }
+  .section-sub{
+    margin: -20px 0 20px;
+    color: var(--ink-dim);
+    font-size: 0.92rem;
+    max-width: 560px;
+  }
+
+  /* ---------- PLUGINS ---------- */
+  .plugin-grid{
+    display:grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+  }
+  @media (max-width: 760px){ .plugin-grid{ grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 480px){ .plugin-grid{ grid-template-columns: 1fr; } }
+  .plugin-card{
+    background: var(--bg-panel);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 18px 20px;
+    transition: transform 0.15s ease, border-color 0.15s ease;
+  }
+  .plugin-card:hover{
+    transform: translateY(-2px);
+    border-color: var(--grass);
+  }
+  .plugin-card-head{
+    display:flex;
+    align-items:center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+  .plugin-card h3{
+    margin:0;
+    font-size: 0.98rem;
+    color: var(--ink);
+  }
+  .plugin-tag{
+    flex-shrink:0;
+    background: color-mix(in srgb, var(--grass) 16%, transparent);
+    color: var(--grass);
+    font-size: 0.68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 3px 8px;
+    border-radius: 999px;
+  }
+  .plugin-card p{
+    margin:0;
+    font-size: 0.86rem;
+    color: var(--ink-dim);
+  }
+
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    gap: 10px;
+    padding: 14px 26px;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 0.98rem;
+    text-decoration:none;
+    border: 2px solid transparent;
+    cursor:pointer;
+    transition: transform 0.12s ease, filter 0.12s ease;
+  }
+  .btn:active{ transform: translateY(2px); }
+  .btn-ghost{
+    background: transparent;
+    border-color: var(--line);
+    color: var(--ink);
+  }
+  .btn-ghost:hover{ border-color: var(--grass); color: var(--grass); }
+
+  /* ---------- FOOTER ---------- */
+  footer{
+    padding: 40px 0 60px;
+    text-align:center;
+    color: var(--ink-dim);
+    font-size: 0.85rem;
+    border-top: 1px solid var(--line);
+    margin-top: 40px;
+  }
+  footer a{ color: var(--grass); text-decoration:none; }
+
+  @media (prefers-reduced-motion: reduce){
+    html{ scroll-behavior: auto; }
+    *{ transition: none !important; }
+  }
+
+  :focus-visible{
+    outline: 2px solid var(--gold);
+    outline-offset: 2px;
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <nav>
+    <a href="index.html" class="brand">
+      <span class="brand-block" aria-hidden="true"></span>
+      ScieCraft
+    </a>
+    <div class="nav-links">
+      <a href="index.html#connect" class="nav-link">Connect</a>
+      <a href="plugins.html" class="nav-link active">Plugins</a>
+      <a href="index.html#rules" class="nav-link">Info</a>
+      <a href="countdown.html" class="nav-link">Events</a>
+      <button class="theme-toggle" id="theme-toggle" aria-label="Switch between dark and light mode">
+        <span class="icon" id="theme-icon">☀️</span><span id="theme-label">Light</span>
+      </button>
+    </div>
+  </nav>
+
+  <header class="page-hero">
+    <h1 class="title pixel">Installed <span>Plugins</span></h1>
+    <p class="tagline">We keep things close to vanilla. These run quietly in the background to protect builds, bridge Java and Bedrock, and smooth out survival.</p>
+  </header>
+
+  <section class="section" id="plugins">
+    <div class="plugin-grid">
+      <div class="plugin-card">
+        <div class="plugin-card-head">
+          <h3>AuthMe</h3>
+          <span class="plugin-tag">Security</span>
+        </div>
+        <p>Requires players to register and log in before they can move or interact.</p>
+      </div>
+      <div class="plugin-card">
+        <div class="plugin-card-head">
+          <h3>Geyser + Floodgate</h3>
+          <span class="plugin-tag">Crossplay</span>
+        </div>
+        <p>Lets Bedrock players join the same Java world with no separate server needed.</p>
+      </div>
+      <div class="plugin-card">
+        <div class="plugin-card-head">
+          <h3>Simple Voice Chat</h3>
+          <span class="plugin-tag">Voice Chat</span>
+        </div>
+        <p>Adds proximity-based in-game voice chat.</p>
+      </div>
+      <div class="plugin-card">
+        <div class="plugin-card-head">
+          <h3>Homes</h3>
+          <span class="plugin-tag">Utility</span>
+        </div>
+        <p>Lets players set and teleport back to their own home locations.</p>
+      </div>
+      <div class="plugin-card">
+        <div class="plugin-card-head">
+          <h3>TPA</h3>
+          <span class="plugin-tag">Utility</span>
+        </div>
+        <p>Lets players send and accept teleport requests to each other.</p>
+      </div>
+      <div class="plugin-card">
+        <div class="plugin-card-head">
+          <h3>String Dupers Return</h3>
+          <span class="plugin-tag">Anti-Exploit</span>
+        </div>
+        <p>Patches known duplication exploits to keep the economy and builds fair.</p>
+      </div>
+    </div>
+
+    <div style="text-align:center; margin-top:36px;">
+      <a class="btn btn-ghost" href="index.html">← Back to home</a>
+    </div>
+  </section>
+
+  <footer>
+    <p>ScieCraft is an independent community server, not affiliated with Microsoft or Tugsay</p>
+    <p>Built by Zenpo</p>
+  </footer>
+
+</div>
+
+<script>
+// --- Theme toggle (defaults to dark, remembers choice) ---
+(function () {
+  const toggle = document.getElementById('theme-toggle');
+  const icon = document.getElementById('theme-icon');
+  const label = document.getElementById('theme-label');
+
+  function render(theme) {
+    if (theme === 'light') {
+      icon.textContent = '🌙';
+      label.textContent = 'Dark';
+    } else {
+      icon.textContent = '☀️';
+      label.textContent = 'Light';
+    }
+  }
+
+  render(document.documentElement.getAttribute('data-theme'));
+
+  toggle.addEventListener('click', () => {
+    const current = document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+    const next = current === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    localStorage.setItem('sciecraft-theme', next);
+    render(next);
+  });
+})();
+</script>
+
+</body>
+</html>
